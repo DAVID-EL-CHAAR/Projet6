@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <!-- Ajoutez vos feuilles de style ou scripts si nécessaire -->
+</head>
+<body>
+    <h1>Welcome to the Home Page!</h1>
+    <p>This is a simple home page view using Thymeleaf.</p>
+
+    <!-- Afficher le nom et le prénom de l'utilisateur connecté -->
+    <div th:if="${user}">
+        <p>Welcome back, <span th:text="${user.nom}">Nom</span> <span th:text="${user.prenom}">Prénom</span>!</p>
+    </div>
+
+    <form th:action="@{/logout}" method="post">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+    <input type="submit" value="Se déconnecter" />
+</form>
+
+</body>
+</html>
