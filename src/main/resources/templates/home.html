@@ -13,6 +13,28 @@
     <div th:if="${user}">
         <p>Welcome back, <span th:text="${user.nom}">Nom</span> <span th:text="${user.prenom}">Prénom</span>!</p>
     </div>
+    
+     <form th:action="@{/addFriend}" method="post">
+        <label for="friendEmail">Friend's Email:</label>
+        <input type="email" id="friendEmail" name="friendEmail" required>
+        <button type="submit">Add Friend</button>
+    </form>
+    
+    <div th:if="${errorMessage}">
+    <p th:text="${errorMessage}">Message d'erreur</p>
+</div>
+
+
+<div th:if="${friends}">
+    <ul>
+        <li th:each="friend : ${friends}" th:text="${friend.friendEmail}"></li>
+    </ul>
+</div>
+
+<div th:if="${noFriendsMessage}">
+    <p th:text="${noFriendsMessage}">Vous n'avez pas d'amis à afficher.</p>
+</div>
+    
 
     <form th:action="@{/logout}" method="post">
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

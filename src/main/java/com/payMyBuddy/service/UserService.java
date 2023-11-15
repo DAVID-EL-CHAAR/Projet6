@@ -44,7 +44,7 @@ public class UserService{
 
     public User registerNewUserAccount(User userDto) {
         if (userRepository.findByEmail(userDto.getEmail()) != null) {
-            throw new RuntimeException("There is an account with that email address: " + userDto.getEmail());
+            throw new RuntimeException("il y a un compte avec cette email " + userDto.getEmail());
         }
         User user = new User();
         user.setNom(userDto.getNom()); // Assurez-vous que le nom est aussi transféré

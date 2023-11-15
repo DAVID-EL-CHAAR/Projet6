@@ -1,0 +1,27 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>edit Account</title>
+    <!-- Ajoutez vos feuilles de style ou scripts si nécessaire -->
+</head>
+<body>
+
+<h2>Modifier un Compte Bancaire</h2>
+<form th:action="@{/bank-accounts/edit}" th:object="${bankAccount}" method="post">
+  RIB: <input type="text" th:field="*{rib}" />
+  <!-- Ajoutez d'autres champs ici -->
+  <input type="submit" value="Modifier" />
+</form>
+
+
+</body>
+</html>
+
+
+
+
+
+
+

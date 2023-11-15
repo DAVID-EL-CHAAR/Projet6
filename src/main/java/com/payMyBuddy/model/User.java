@@ -1,10 +1,15 @@
 package com.payMyBuddy.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class User {
@@ -26,6 +31,9 @@ public class User {
 
     @Column(name = "enabled")
     private boolean enabled;
+    
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Friend> friends = new HashSet<>();
     
     public Long getId() {
         return id;
@@ -78,6 +86,15 @@ public class User {
         this.enabled = enabled;
     }
 
+    public void addFriend(Friend friend) {
+        friends.add(friend);
+        friend.setUser(this);
+    }
+
+    public void removeFriend(Friend friend) {
+        friends.remove(friend);
+        friend.setUser(null);
+    }
 }
     
 

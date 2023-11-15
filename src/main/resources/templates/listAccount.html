@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Comptes Bancaires</title>
+    <!-- Ajoutez vos feuilles de style ou scripts si nécessaire -->
+</head>
+<body>
+
+<h2>Liste des Comptes Bancaires</h2>
+<table>
+    <thead>
+        <tr>
+            <th>N° RIB</th>
+            <th>Solde</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="account : ${bankAccounts}">
+            <td th:text="${account.rib}"></td>
+            <td th:text="${account.balance}"></td>
+            <td>
+                <a th:href="@{/bank-accounts/edit/{id}(id=${account.id})}">Modifier</a>
+                <a th:href="@{/bank-accounts/delete/{id}(id=${account.id})}">Supprimer</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<a href="/bank-accounts/add">Ajouter un nouveau compte</a>
+
+</body>
+</html>

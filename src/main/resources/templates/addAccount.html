@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajouter un Compte Bancaire</title>
+    <!-- Ajoutez vos feuilles de style ou scripts si nécessaire -->
+</head>
+<body>
+
+<h2>Ajouter un Compte Bancaire</h2>
+<form th:action="@{/bank-accounts/add}" method="post">
+    RIB: <input type="text" name="rib" />
+    Solde Initial: <input type="text" name="initialBalance" />
+    <input type="submit" value="Ajouter" />
+</form>
+
+</body>
+</html>

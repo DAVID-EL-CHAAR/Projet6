@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Activer Compte PayMyBuddy</title>
+    <!-- Ajoutez vos feuilles de style ou scripts si nécessaire -->
+</head>
+<body>
+    <h1>Activer votre Compte PayMyBuddy</h1>
+
+    <div th:if="${accountAlreadyActivated}">
+        <p>Votre compte PayMyBuddy est déjà activé.</p>
+    </div>
+    <form th:action="@{/transfers/activatePayMyBuddyAccount}" method="post" th:unless="${accountAlreadyActivated}">
+        <input type="submit" value="Activer">
+    </form>
+
+</body>
+</html>

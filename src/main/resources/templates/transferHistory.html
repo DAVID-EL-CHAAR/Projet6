@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Historique des Transferts</title>
+</head>
+<body>
+    <h1>Historique des Transferts</h1>
+    <table>
+        <tr>
+            <th>De Compte</th>
+            <th>Vers Compte</th>
+            <th>Montant</th>
+            <th>Date de Transfert</th>
+        </tr>
+        <tr th:each="transfer : ${history}">
+            <td th:text="${transfer.fromAccount}"></td>
+            <td th:text="${transfer.toAccount}"></td>
+            <td th:text="${transfer.amount}"></td>
+            <td th:text="${transfer.transferDate}"></td>
+        </tr>
+    </table>
+</body>
+</html>
