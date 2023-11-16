@@ -19,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
@@ -26,6 +27,7 @@ import com.payMyBuddy.CustomUserDetails;
 import com.payMyBuddy.model.Friend;
 import com.payMyBuddy.model.User;
 import com.payMyBuddy.repository.UserRepository;
+import com.payMyBuddy.service.FriendDTO;
 import com.payMyBuddy.service.FriendService;
 import com.payMyBuddy.service.UserService;
 
@@ -136,10 +138,24 @@ public class UserController {
         return "redirect:/login";
     }
 
+    @PostMapping("/addFriend")
+    public ResponseEntity<?> addFriend(Principal principal, @RequestParam String friendEmail) {
+        try {
+            friendService.addFriend(principal.getName(), friendEmail);
+            return ResponseEntity.ok("ami ajouter avec succes");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
 
     @GetMapping("/login")
     public String login() {
         return "login";
+    }
+    
+    @GetMapping("/addFriend")
+    public ModelAndView showTransferFromPayMyBuddyToBankForm() {
+        return new ModelAndView("addfriend");
     }
 /*
 
@@ -234,7 +250,7 @@ public class UserController {
             model.addAttribute("user", user);
             
             // Récupère la liste des amis de l'utilisateur
-            List<Friend> friendsList = friendService.getFriends(user.getEmail());
+            List<FriendDTO> friendsList = friendService.getFriends(user.getEmail());
             
             // Vérifie si la liste des amis n'est pas vide
             if (friendsList != null && !friendsList.isEmpty()) {

@@ -1,6 +1,7 @@
 package com.payMyBuddy.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -50,11 +51,19 @@ public class FriendService {
         friendRepository.save(friendForFriendUser);
     }
     
-    public List<Friend> getFriends(String userEmail) {
+    public List<FriendDTO> getFriends(String userEmail) {
         User user = userRepository.findByEmail(userEmail);
         if (user == null) {
-            throw new UsernameNotFoundException("User non trouve avec cette email: " + userEmail);
+            throw new UsernameNotFoundException("User non trouvé avec cette email: " + userEmail);
         }
-        return friendRepository.findAllByUser(user);
+
+        List<Friend> friends = friendRepository.findAllByUser(user);
+        return friends.stream().map(this::convertToFriendDTO).collect(Collectors.toList());
     }
+
+    private FriendDTO convertToFriendDTO(Friend friend) {
+        User friendUser = userRepository.findByEmail(friend.getFriendEmail());
+        return new FriendDTO(friendUser.getNom(), friendUser.getPrenom(), friend.getFriendEmail());
+    }
+
 }

@@ -30,6 +30,11 @@ public class TransferService {
 	
 	public void transferFromBankToPayMyBuddy(User user, String rib, BigDecimal amount) throws Exception {
 	    BankAccount bankAccount = bankAccountRepository.findByRib(rib);
+	    
+	    if (!bankAccount.getUser().equals(user)) {
+            throw new Exception("Opération non autorisée.");
+            
+        }
 	    PayMyBuddyAccount payMyBuddyAccount = payMyBuddyAccountRepository.findByUser(user);
 
 	    // Vérifier le solde du compte bancaire
@@ -55,6 +60,9 @@ public class TransferService {
 
 	public void transferFromPayMyBuddyToBank(User user, String rib, BigDecimal amount) throws Exception {
 	    BankAccount bankAccount = bankAccountRepository.findByRib(rib);
+	    if (!bankAccount.getUser().equals(user)) {
+            throw new Exception("Opération non autorisée.");
+        }
 	    PayMyBuddyAccount payMyBuddyAccount = payMyBuddyAccountRepository.findByUser(user);
 
 	    // Vérifier le solde du compte PayMyBuddy
@@ -88,6 +96,7 @@ public class TransferService {
 	  public List<TransferHistory> getTransferHistory(Long userId) {
 		    return transferHistoryRepository.findByUserId(userId);
 		}
+
 
 
 

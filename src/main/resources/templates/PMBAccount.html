@@ -6,12 +6,15 @@
     <!-- Ajoutez vos feuilles de style ou scripts si nécessaire -->
 </head>
 <body>
+
+<div th:replace="navbar :: navbar"></div>
+
     <h1>Activer votre Compte PayMyBuddy</h1>
 
     <div th:if="${accountAlreadyActivated}">
         <p>Votre compte PayMyBuddy est déjà activé.</p>
     </div>
-    <form th:action="@{/transfers/activatePayMyBuddyAccount}" method="post" th:unless="${accountAlreadyActivated}">
+    <form th:action="@{/PMB/activatePayMyBuddyAccount}" method="post" th:unless="${accountAlreadyActivated}">
         <input type="submit" value="Activer">
     </form>
 

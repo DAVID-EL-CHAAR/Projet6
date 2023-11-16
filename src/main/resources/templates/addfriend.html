@@ -1,15 +1,19 @@
-<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Add Friends</title>
+    <title>Ajouter un Compte Bancaire</title>
+    <!-- Ajoutez vos feuilles de style ou scripts si nécessaire -->
 </head>
 <body>
-    <h1>Add a Friend</h1>
-    <form th:action="@{/addFriend}" method="post">
+
+<div th:replace="navbar :: navbar"></div>
+
+<h1>Ajouter un ami</h1>
+  <form th:action="@{/addFriend}" method="post">
         <label for="friendEmail">Friend's Email:</label>
         <input type="email" id="friendEmail" name="friendEmail" required>
         <button type="submit">Add Friend</button>
     </form>
+
 </body>
 </html>

@@ -6,11 +6,15 @@
     <!-- Ajoutez vos feuilles de style ou scripts si nécessaire -->
 </head>
 <body>
+<div th:replace="navbar :: navbar"></div>
 
 <h2>Ajouter un Compte Bancaire</h2>
 <form th:action="@{/bank-accounts/add}" method="post">
-    RIB: <input type="text" name="rib" />
-    Solde Initial: <input type="text" name="initialBalance" />
+    
+    RIB: <input type="text" name="rib" required/><br>
+    Solde Initial: <input type="text" name="initialBalance" required/><br>
+    Nom du Titulaire: <input type="text" name="nom" required/><br>
+    Prénom du Titulaire: <input type="text" name="prenom" required/><br>
     <input type="submit" value="Ajouter" />
 </form>
 

@@ -7,10 +7,14 @@
 </head>
 <body>
 
+<div th:replace="navbar :: navbar"></div>
+
 <h2>Liste des Comptes Bancaires</h2>
 <table>
     <thead>
         <tr>
+            <th>Nom</th>
+            <th>Prenom</th>
             <th>N° RIB</th>
             <th>Solde</th>
             <th>Actions</th>
@@ -18,6 +22,8 @@
     </thead>
     <tbody>
         <tr th:each="account : ${bankAccounts}">
+            <td th:text="${account.nom}"></td>
+            <td th:text="${account.prenom}"></td>
             <td th:text="${account.rib}"></td>
             <td th:text="${account.balance}"></td>
             <td>

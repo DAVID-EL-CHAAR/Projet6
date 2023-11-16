@@ -68,21 +68,6 @@ public ResponseEntity<?> transferFromPayMyBuddyToBank(Principal principal,
 }
 
 
-@PostMapping("/activatePayMyBuddyAccount")
-public ResponseEntity<?> activatePayMyBuddyAccount(Principal principal) {
-    try {
-        User user = userRepository.findByEmail(principal.getName());
-        if (user == null) {
-            return ResponseEntity.badRequest().body("Utilisateur non trouvé.");
-        }
-
-        transferService.createAndLinkPayMyBuddyAccount(user);
-        return ResponseEntity.ok("Compte PayMyBuddy activé avec succès.");
-    } catch (Exception e) {
-        return ResponseEntity.badRequest().body(e.getMessage());
-    }
-}
-
 
 @GetMapping("/transferHistory")
 public ModelAndView transferHistory(Principal principal) {
@@ -105,21 +90,6 @@ public ModelAndView showTransferFromPayMyBuddyToBankForm() {
     return new ModelAndView("transferFromPayMyBuddyToBank");
 }
 
-@GetMapping("/activatePayMyBuddyAccount")
-public ModelAndView showActivatePayMyBuddyAccountForm(Principal principal) {
-    ModelAndView modelAndView = new ModelAndView("PMBAccount");
-    User user = userRepository.findByEmail(principal.getName());
-
-    // Vérifier si l'utilisateur a déjà un compte PayMyBuddy
-    PayMyBuddyAccount existingAccount = payMyBuddyAccountRepository.findByUser(user);
-    if (existingAccount != null) {
-        modelAndView.addObject("accountAlreadyActivated", true);
-    } else {
-        modelAndView.addObject("accountAlreadyActivated", false);
-    }
-
-    return modelAndView;
-}
 
 
 

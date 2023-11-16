@@ -6,6 +6,8 @@
     <!-- Ajoutez vos feuilles de style ou scripts si nécessaire -->
 </head>
 <body>
+  <div th:replace="navbar :: navbar"></div>
+
     <h1>Welcome to the Home Page!</h1>
     <p>This is a simple home page view using Thymeleaf.</p>
 
@@ -13,27 +15,15 @@
     <div th:if="${user}">
         <p>Welcome back, <span th:text="${user.nom}">Nom</span> <span th:text="${user.prenom}">Prénom</span>!</p>
     </div>
-    
-     <form th:action="@{/addFriend}" method="post">
-        <label for="friendEmail">Friend's Email:</label>
-        <input type="email" id="friendEmail" name="friendEmail" required>
-        <button type="submit">Add Friend</button>
-    </form>
+     
     
     <div th:if="${errorMessage}">
     <p th:text="${errorMessage}">Message d'erreur</p>
 </div>
 
 
-<div th:if="${friends}">
-    <ul>
-        <li th:each="friend : ${friends}" th:text="${friend.friendEmail}"></li>
-    </ul>
-</div>
+  <a href="/PMB/activatePayMyBuddyAccount">Lien pour activer votre comte PayMyBuddy</a>
 
-<div th:if="${noFriendsMessage}">
-    <p th:text="${noFriendsMessage}">Vous n'avez pas d'amis à afficher.</p>
-</div>
     
 
     <form th:action="@{/logout}" method="post">

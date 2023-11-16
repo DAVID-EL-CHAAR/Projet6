@@ -26,10 +26,10 @@ public class BankAccountService {
 	private BankAccountRepository bankAccountRepository;
 	
 
-	public void addBankAccountToUser(String userEmail, String rib, BigDecimal initialBalance) throws Exception {
+	public void addBankAccountToUser(String userEmail, String rib, BigDecimal initialBalance, String nom, String prenom) throws Exception {
 	    
 	    // Vérifier si le RIB existe déjà
-	    BankAccount existingAccount = bankAccountRepository.findByRib(rib);
+	    BankAccount existingAccount = bankAccountRepository.findByRib(rib);   
 	    if (existingAccount != null) {
 	        throw new Exception("Ce RIB existe déjà.");
 	    }
@@ -47,29 +47,37 @@ public class BankAccountService {
 
 	    // Créer et sauvegarder le nouveau compte bancaire
 	    BankAccount bankAccount = new BankAccount();
+	    bankAccount.setNom(nom);
+	    bankAccount.setPrenom(prenom);
 	    bankAccount.setRib(rib);
 	    bankAccount.setBalance(initialBalance);
 	    bankAccount.setUser(user);
 	    bankAccountRepository.save(bankAccount);
 	}
 
-	
-	public void updateBankAccountRib(Long bankAccountId, String newRib) {
+	public void updateBankAccount(Long bankAccountId, String rib, BigDecimal newBalance, String nom, String prenom) {
 	    Optional<BankAccount> bankAccountOptional = bankAccountRepository.findById(bankAccountId);
-
 	    if (!bankAccountOptional.isPresent()) {
 	        throw new RuntimeException("Compte bancaire non trouvé.");
 	    }
 
 	    BankAccount bankAccount = bankAccountOptional.get();
-	    bankAccount.setRib(newRib);
+	    bankAccount.setNom(nom);
+	    bankAccount.setPrenom(prenom);
+	    bankAccount.setRib(rib);
+	    bankAccount.setBalance(newBalance);
 	    bankAccountRepository.save(bankAccount);
 	}
+
 
 
 	// Récupérer tous les comptes bancaires
     public List<BankAccount> findAll() {
         return bankAccountRepository.findAll();
+    }
+    
+    public List<BankAccount> findAllByUser(User user) {
+        return bankAccountRepository.findAllByUser(user);
     }
 
     // Trouver un compte bancaire par ID

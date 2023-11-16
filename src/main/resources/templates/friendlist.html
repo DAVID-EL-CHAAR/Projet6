@@ -3,9 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Friends List</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 5px;
+            text-align: left;
+        }
+    </style>
 </head>
 <body>
-   
-    </div>
+<div th:replace="navbar :: navbar"></div>
+
+<div th:if="${friends}">
+    <ul>
+        <li th:each="friend : ${friends}" th:text="${friend.nom} + ' ' + ${friend.prenom} + ' ' + ${friend.email} + ''"></li>
+    </ul>
+</div>
+
+   <div th:if="${noFriendsMessage}">
+       <p th:text="${noFriendsMessage}">Vous n'avez pas d'amis à afficher.</p>
+   </div>
 </body>
 </html>

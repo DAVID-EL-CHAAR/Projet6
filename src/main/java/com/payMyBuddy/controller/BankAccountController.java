@@ -7,7 +7,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.math.BigDecimal;
 import java.security.Principal;
+import java.util.List;
+
 import com.payMyBuddy.model.BankAccount;
+import com.payMyBuddy.model.User;
+import com.payMyBuddy.repository.UserRepository;
 import com.payMyBuddy.service.BankAccountService;
 
 @Controller
@@ -16,12 +20,19 @@ public class BankAccountController {
 
     @Autowired
     private BankAccountService bankAccountService; // Assurez-vous d'avoir ce service implémenté
+    
+    @Autowired
+    private UserRepository userRepository;
+   
 
     // Afficher la liste des comptes bancaires
     @GetMapping
-    public String listBankAccounts(Model model) {
-        model.addAttribute("bankAccounts", bankAccountService.findAll());
-        return "listAccount"; // Vue à créer
+    public String listBankAccounts(Model model, Principal principal) {
+        String userEmail = principal.getName();
+        User user = userRepository.findByEmail(userEmail);
+        List<BankAccount> bankAccounts = bankAccountService.findAllByUser(user);
+        model.addAttribute("bankAccounts", bankAccounts);
+        return "listAccount";
     }
 
     // Afficher le formulaire pour ajouter un nouveau compte bancaire
@@ -34,42 +45,55 @@ public class BankAccountController {
 
  // ...
 
- @PostMapping("/add")
- public String addBankAccount(@RequestParam("rib") String rib,
-                              @RequestParam("initialBalance") BigDecimal initialBalance,
-                              Principal principal,
-                              RedirectAttributes redirectAttrs) {
-     try {
-         String userEmail = principal.getName(); // Obtient l'email de l'utilisateur connecté
-         bankAccountService.addBankAccountToUser(userEmail, rib, initialBalance);
-         redirectAttrs.addFlashAttribute("success", "Compte bancaire ajouté avec succès.");
-     } catch (Exception e) {
-         redirectAttrs.addFlashAttribute("error", "Erreur lors de l'ajout du compte bancaire : " + e.getMessage());
-         return "redirect:/bank-accounts/add";
-     }
-     return "redirect:/bank-accounts";
- }
+    @PostMapping("/add")
+    public String addBankAccount(@RequestParam("rib") String rib,
+                                 @RequestParam("initialBalance") BigDecimal initialBalance,
+                                 @RequestParam("nom") String nom,
+                                 @RequestParam("prenom") String prenom,
+                                 Principal principal,
+                                 RedirectAttributes redirectAttrs) {
+        try {
+            String userEmail = principal.getName(); // Obtient l'email de l'utilisateur connecté
+            bankAccountService.addBankAccountToUser(userEmail, rib, initialBalance, nom, prenom);
+            redirectAttrs.addFlashAttribute("success", "Compte bancaire ajouté avec succès.");
+        } catch (Exception e) {
+            redirectAttrs.addFlashAttribute("error", "Erreur lors de l'ajout du compte bancaire : " + e.getMessage());
+            return "redirect:/bank-accounts/add";
+        }
+        return "redirect:/bank-accounts";
+    }
+
 
 
 
     // Afficher le formulaire pour modifier un compte bancaire
     @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable Long id, Model model) {
-        model.addAttribute("bankAccount", bankAccountService.findById(id));
-        return "editAccount"; // Vue à créer
+    public String showEditForm(@PathVariable Long id, Model model, Principal principal) {
+        BankAccount bankAccount = bankAccountService.findById(id);
+        if (bankAccount == null || !bankAccount.getUser().getEmail().equals(principal.getName())) {
+            // Rediriger vers une page d'erreur ou afficher un message d'erreur
+            return "redirect:/bank-accounts";
+        }
+        model.addAttribute("bankAccount", bankAccount);
+        return "editAccount";
     }
 
     // Traiter la mise à jour d'un compte bancaire
     @PostMapping("/edit")
     public String updateBankAccount(@ModelAttribute BankAccount bankAccount) {
-        bankAccountService.save(bankAccount);
+        bankAccountService.updateBankAccount(bankAccount.getId(), bankAccount.getRib(), bankAccount.getBalance(), bankAccount.getNom(), bankAccount.getPrenom());
         return "redirect:/bank-accounts";
     }
 
+
     // Supprimer un compte bancaire
     @GetMapping("/delete/{id}")
-    public String deleteBankAccount(@PathVariable Long id) {
-        bankAccountService.delete(id);
+    public String deleteBankAccount(@PathVariable Long id, Principal principal) {
+        BankAccount bankAccount = bankAccountService.findById(id);
+        if (bankAccount != null && bankAccount.getUser().getEmail().equals(principal.getName())) {
+            bankAccountService.delete(id);
+        }
+        // Gérer le cas où l'utilisateur n'est pas autorisé à supprimer le compte
         return "redirect:/bank-accounts";
     }
 }

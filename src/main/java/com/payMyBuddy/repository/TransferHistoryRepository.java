@@ -8,4 +8,6 @@ import com.payMyBuddy.model.TransferHistory;
 
 public interface TransferHistoryRepository extends JpaRepository<TransferHistory, Long> {
     List<TransferHistory> findByUserId(Long userId);
+    
+   
 }

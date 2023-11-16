@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Account Details</title>
+</head>
+<body>
+
+<div th:replace="navbar :: navbar"></div>
+
+    <h2>Détails du compte</h2>
+    <div th:if="${account}">
+        <p>Nom: <span th:text="${account.user.nom}"></span></p>
+        <p>Prénom: <span th:text="${account.user.prenom}"></span></p>
+        <p>Email: <span th:text="${account.user.email}"></span></p>
+        <p>Solde: <span th:text="${account.balance}"></span> €</p>
+    </div>
+    <div th:if="${account == null}">
+        <p>Compte non trouvé.</p>
+    </div>
+</body>
+</html>
