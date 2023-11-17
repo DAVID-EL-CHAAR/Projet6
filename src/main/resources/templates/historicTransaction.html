@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Historique des Transactions</title>
+</head>
+<body>
+
+<div th:replace="navbar :: navbar"></div>
+
+<h2>Transactions Envoyées</h2>
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Destinataire</th>
+        <th>Montant</th>
+        <th>Description</th>
+    </tr>
+    <tr th:each="transaction : ${sentTransactions}">
+        <td th:text="${transaction.date}">Date</td>
+        <td th:text="${transaction.recipient.email}">Destinataire</td>
+        <td th:text="${transaction.amount}">Montant</td>
+        <td th:text="${transaction.description}">Description</td>
+    </tr>
+</table>
+
+<h2>Transactions Reçues</h2>
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Expéditeur</th>
+        <th>Montant</th>
+        <th>Description</th>
+    </tr>
+    <tr th:each="transaction : ${receivedTransactions}">
+        <td th:text="${transaction.date}">Date</td>
+        <td th:text="${transaction.sender.email}">Expéditeur</td>
+        <td th:text="${transaction.amount}">Montant</td>
+        <td th:text="${transaction.description}">Description</td>
+    </tr>
+</table>
+
+</body>
+</html>
+
+

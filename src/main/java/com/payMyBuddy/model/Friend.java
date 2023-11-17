@@ -22,6 +22,10 @@ public class Friend {
     @Column(name = "friend_email")
     private String friendEmail;
     
+    @ManyToOne
+    @JoinColumn(name = "friend_id", nullable = false)
+    private User friend; // C'est l'ami de l'utilisateur
+
    
 
     public Long getId() {
@@ -46,6 +50,14 @@ public class Friend {
 
     public void setFriendEmail(String friendEmail) {
         this.friendEmail = friendEmail;
+    }
+    
+    public User getFriend() {
+        return friend;
+    }
+
+    public void setFriend(User friend) {
+        this.friend = friend;
     }
 }
 

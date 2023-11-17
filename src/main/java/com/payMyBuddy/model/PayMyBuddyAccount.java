@@ -23,6 +23,13 @@ public class PayMyBuddyAccount {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    public void adjustBalance(BigDecimal amount, boolean isCredit) {
+        if (isCredit) {
+            this.balance = this.balance.add(amount);
+        } else {
+            this.balance = this.balance.subtract(amount);
+        }
+    }
 
 
     public Long getId() {

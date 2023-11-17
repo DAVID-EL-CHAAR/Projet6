@@ -41,12 +41,13 @@ public class FriendService {
         
         Friend friendForUser = new Friend();
         friendForUser.setUser(user);
+        friendForUser.setFriend(friendUser);
         friendForUser.setFriendEmail(friendEmail);
         friendRepository.save(friendForUser);
 
-        
         Friend friendForFriendUser = new Friend();
         friendForFriendUser.setUser(friendUser);
+        friendForFriendUser.setFriend(user);
         friendForFriendUser.setFriendEmail(userEmail);
         friendRepository.save(friendForFriendUser);
     }
