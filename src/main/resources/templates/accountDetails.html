@@ -17,6 +17,9 @@
     </div>
     <div th:if="${account == null}">
         <p>Compte non trouvé.</p>
+         <a th:href="@{/PMB/activatePayMyBuddyAccount}" th:if="${activateAccount}">Activer le compte PayMyBuddy</a>
+         
+         
     </div>
 </body>
 </html>

@@ -31,20 +31,22 @@ public class PayMyBuddyAccountController {
 	    private TransferService transferService;
     
 	
-	@GetMapping("/accountDetails")
-	public String accountDetails(Model model, Principal principal) {
-	    String email = principal.getName();
-	    User user = userRepository.findByEmail(email);
-	    
-	    if (user != null) {
-	        PayMyBuddyAccount account = payMyBuddyAccountRepository.findByUser(user);
-	        if (account != null) {
-	            model.addAttribute("account", account);
-	        }
-	    }
+	   @GetMapping("/accountDetails")
+	   public String accountDetails(Model model, Principal principal) {
+	       String email = principal.getName();
+	       User user = userRepository.findByEmail(email);
+	       
+	       if (user != null) {
+	           PayMyBuddyAccount account = payMyBuddyAccountRepository.findByUser(user);
+	           model.addAttribute("account", account);
 
-	    return "accountDetails";
-	}
+	           // Ajouter un attribut pour indiquer si le compte doit être activé
+	           model.addAttribute("activateAccount", (account == null));
+	       }
+
+	       return "accountDetails";
+	   }
+
 	
 	@PostMapping("/activatePayMyBuddyAccount")
 	public ResponseEntity<?> activatePayMyBuddyAccount(Principal principal) {
