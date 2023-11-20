@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.payMyBuddy.model.Transaction;
 import com.payMyBuddy.model.TransactionHistory;
@@ -37,22 +38,26 @@ public class TransactionController {
 
     @GetMapping("/sendMoney")
     public ModelAndView showSendMoneyForm() {
-        // Ajouter des logiques nécessaires si besoin
+        
         return new ModelAndView("sendMoney");
     }
 
     @PostMapping("/sendMoney")
-    public ResponseEntity<?> sendMoney(Principal principal,
-                                       @RequestParam String recipientEmail,
-                                       @RequestParam BigDecimal amount,
-                                       @RequestParam(required = false) String description) {
+    public String sendMoney(Principal principal,
+                            @RequestParam String recipientEmail,
+                            @RequestParam BigDecimal amount,
+                            @RequestParam(required = false) String description,
+                            RedirectAttributes redirectAttributes) {
         try {
             transactionService.sendMoney(principal.getName(), recipientEmail, amount, description);
-            return ResponseEntity.ok("Transaction réussie.");
+            return "redirect:/transactions/tsuccessPage";
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            // Ajouter un message d'erreur à redirectAttributes
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/transactions/terrorPage";
         }
     }
+
 
     
     @GetMapping("/history")
@@ -90,6 +95,17 @@ public class TransactionController {
         List<Transaction> receivedTransactions = transactionService.getReceivedTransactions(user.getId());
         return ResponseEntity.ok(receivedTransactions);
     }
+    
+    @GetMapping("/tsuccessPage")
+    public String showSuccessPage() {
+        return "tsuccessPage"; 
+    }
+
+    @GetMapping("/terrorPage")
+    public String showErrorPage() {
+        return "terrorPage";
+    }
+
 
 
   

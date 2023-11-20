@@ -16,12 +16,12 @@
             <th>Montant</th>
             <th>Date de Transfert</th>
         </tr>
-        <tr th:each="transfer : ${history}">
-            <td th:text="${transfer.fromAccount}"></td>
-            <td th:text="${transfer.toAccount}"></td>
-            <td th:text="${transfer.amount}"></td>
-            <td th:text="${transfer.transferDate}"></td>
-        </tr>
+         <tr th:each="transfer : ${history}">
+        <td th:text="${transfer.fromAccount}"></td>
+        <td th:text="${transfer.toAccount}"></td>
+        <td th:text="${transfer.amount}"></td>
+        <td th:text="${#temporals.format(transfer.transferDate, 'dd/MM/yyyy HH:mm:ss')}"></td>
+    </tr>
     </table>
     <br>
     <a href="/transfers/bankToPayMyBuddy">Transfert de la Banque à PayMyBuddy</a>

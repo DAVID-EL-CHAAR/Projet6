@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Transfert Réussi</title>
+</head>
+<body>
+    <h1>Erreur</h1>
+   <div th:if="${errorMessage}">
+    <p th:text="${errorMessage}"></p>
+</div>
+    <a href="/home">Retour à la page d'accueil</a>
+</body>
+</html>

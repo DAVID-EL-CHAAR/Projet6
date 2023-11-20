@@ -55,7 +55,16 @@ public class BankAccountService {
 	    bankAccountRepository.save(bankAccount);
 	}
 
-	public void updateBankAccount(Long bankAccountId, String rib, BigDecimal newBalance, String nom, String prenom) {
+	public void updateBankAccount(Long bankAccountId, String rib, BigDecimal newBalance, String nom, String prenom) throws Exception {
+	    BankAccount existingAccount = bankAccountRepository.findByRib(rib);
+	    if (existingAccount != null && !existingAccount.getId().equals(bankAccountId)) {
+	        throw new Exception("Ce RIB existe déjà.");
+	    }
+
+	    if (newBalance.compareTo(new BigDecimal("10")) < 0) {
+	        throw new Exception("Le solde initial doit être d'au moins 10€.");
+	    }
+
 	    Optional<BankAccount> bankAccountOptional = bankAccountRepository.findById(bankAccountId);
 	    if (!bankAccountOptional.isPresent()) {
 	        throw new RuntimeException("Compte bancaire non trouvé.");

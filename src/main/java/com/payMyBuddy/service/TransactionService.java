@@ -40,11 +40,16 @@ public class TransactionService {
     private LocalDateTime date;
 
     public void sendMoney(String senderEmail, String recipientEmail, BigDecimal amount, String description) throws Exception {
+    	
+        if (amount.compareTo(BigDecimal.ONE) < 0) {
+    	    throw new Exception("Le montant doit être supérieur ou égal à 1.");
+    	    }
+    	  
         User sender = userRepository.findByEmail(senderEmail);
         User recipient = userRepository.findByEmail(recipientEmail);
 
         if (sender == null || recipient == null) {
-            throw new Exception("L'un des utilisateurs n'a pas été trouvé.");
+            throw new Exception(" utilisateurs n'a pas été trouvé.");
         }
         
         // Vérifier si les deux utilisateurs sont amis

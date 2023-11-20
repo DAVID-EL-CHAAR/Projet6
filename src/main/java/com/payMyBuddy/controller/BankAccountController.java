@@ -43,7 +43,7 @@ public class BankAccountController {
     }
 
 
- // ...
+
 
     @PostMapping("/add")
     public String addBankAccount(@RequestParam("rib") String rib,
@@ -57,8 +57,8 @@ public class BankAccountController {
             bankAccountService.addBankAccountToUser(userEmail, rib, initialBalance, nom, prenom);
             redirectAttrs.addFlashAttribute("success", "Compte bancaire ajouté avec succès.");
         } catch (Exception e) {
-            redirectAttrs.addFlashAttribute("error", "Erreur lors de l'ajout du compte bancaire : " + e.getMessage());
-            return "redirect:/bank-accounts/add";
+            redirectAttrs.addFlashAttribute("errorMessage", "Erreur lors de l'ajout du compte bancaire : " + e.getMessage());
+            return "redirect:/bank-accounts/errorPage3";
         }
         return "redirect:/bank-accounts";
     }
@@ -66,24 +66,37 @@ public class BankAccountController {
 
 
 
-    // Afficher le formulaire pour modifier un compte bancaire
     @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable Long id, Model model, Principal principal) {
+    public String showEditForm(@PathVariable Long id, Model model, Principal principal, RedirectAttributes redirectAttrs) {
         BankAccount bankAccount = bankAccountService.findById(id);
-        if (bankAccount == null || !bankAccount.getUser().getEmail().equals(principal.getName())) {
-            // Rediriger vers une page d'erreur ou afficher un message d'erreur
-            return "redirect:/bank-accounts";
+
+        if (bankAccount == null) {
+            redirectAttrs.addFlashAttribute("errorMessage", "Compte bancaire non trouvé.");
+            return "redirect:/bank-accounts/errorPage3";
         }
+
+        if (!bankAccount.getUser().getEmail().equals(principal.getName())) {
+            redirectAttrs.addFlashAttribute("errorMessage", "Vous n'êtes pas autorisé à modifier ce compte.");
+            return "redirect:/bank-accounts/errorPage3";
+        }
+
         model.addAttribute("bankAccount", bankAccount);
         return "editAccount";
     }
 
+
     // Traiter la mise à jour d'un compte bancaire
     @PostMapping("/edit")
-    public String updateBankAccount(@ModelAttribute BankAccount bankAccount) {
-        bankAccountService.updateBankAccount(bankAccount.getId(), bankAccount.getRib(), bankAccount.getBalance(), bankAccount.getNom(), bankAccount.getPrenom());
-        return "redirect:/bank-accounts";
+    public String updateBankAccount(@ModelAttribute BankAccount bankAccount, RedirectAttributes redirectAttributes) {
+        try {
+            bankAccountService.updateBankAccount(bankAccount.getId(), bankAccount.getRib(), bankAccount.getBalance(), bankAccount.getNom(), bankAccount.getPrenom());
+            return "redirect:/bank-accounts";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/bank-accounts/errorPage3"; // Remplacez par le chemin de votre page d'erreur
+        }
     }
+
 
 
     // Supprimer un compte bancaire
@@ -96,4 +109,12 @@ public class BankAccountController {
         // Gérer le cas où l'utilisateur n'est pas autorisé à supprimer le compte
         return "redirect:/bank-accounts";
     }
+    
+    
+    @GetMapping("/errorPage3")
+    public String showErrorPage2() {
+        return "aPageError"; 
+    }
+
+
 }

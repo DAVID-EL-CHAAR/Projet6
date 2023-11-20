@@ -16,6 +16,7 @@ import com.payMyBuddy.model.User;
 import com.payMyBuddy.repository.PayMyBuddyAccountRepository;
 import com.payMyBuddy.repository.UserRepository;
 import com.payMyBuddy.service.TransferService;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/PMB")
@@ -48,20 +49,24 @@ public class PayMyBuddyAccountController {
 	   }
 
 	
-	@PostMapping("/activatePayMyBuddyAccount")
-	public ResponseEntity<?> activatePayMyBuddyAccount(Principal principal) {
-	    try {
-	        User user = userRepository.findByEmail(principal.getName());
-	        if (user == null) {
-	            return ResponseEntity.badRequest().body("Utilisateur non trouvé.");
-	        }
+	   @PostMapping("/activatePayMyBuddyAccount")
+	   public String activatePayMyBuddyAccount(Principal principal, RedirectAttributes redirectAttributes) {
+	       try {
+	           User user = userRepository.findByEmail(principal.getName());
+	           if (user == null) {
+	               redirectAttributes.addFlashAttribute("error", "Utilisateur non trouvé.");
+	               return "redirect:/PMB/activate"; // Remplacez par votre page d'erreur
+	           }
 
-	        transferService.createAndLinkPayMyBuddyAccount(user);
-	        return ResponseEntity.ok("Compte PayMyBuddy activé avec succès.");
-	    } catch (Exception e) {
-	        return ResponseEntity.badRequest().body(e.getMessage());
-	    }
-	}
+	           transferService.createAndLinkPayMyBuddyAccount(user);
+	           redirectAttributes.addFlashAttribute("success", "Compte PayMyBuddy activé avec succès.");
+	           return "redirect:/PMB/activate"; // Remplacez par votre page de succès
+	       } catch (Exception e) {
+	           redirectAttributes.addFlashAttribute("error", e.getMessage());
+	           return "redirect:/PMB/activate"; // Remplacez par votre page d'erreur
+	       }
+	   }
+
 	
 	@GetMapping("/activatePayMyBuddyAccount")
 	public ModelAndView showActivatePayMyBuddyAccountForm(Principal principal) {
@@ -78,6 +83,13 @@ public class PayMyBuddyAccountController {
 
 	    return modelAndView;
 	}
+	
+	@GetMapping("/activate")
+	public String activate() {
+	    return "activate"; 
+	}
+
+
 
 
 

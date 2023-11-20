@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Erreur</title>
+    <!-- Ajoutez vos feuilles de style ou scripts si nécessaire -->
+</head>
+<body>
+
+<div th:replace="navbar :: navbar"></div>
+<h2>Ajouter un Compte Bancaire</h2>
+<div th:if="${error}">
+    <p th:text="${error}"></p>
+</div>
+<div th:if="${success}">
+    <p th:text="${success}"></p>
+</div>
+
+<a href="/home">Retour à la page d'accueil</a>
+
+</body>
+</html>

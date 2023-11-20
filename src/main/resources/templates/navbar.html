@@ -30,15 +30,23 @@
     </style>
 </head>
 <body>
-    <div class="navbar" th:fragment="navbar">
-        <a th:href="@{/home}" class="active">Accueil</a>
-        <a th:href="@{/transfers/transferHistory}">Transfert</a>
-        <a th:href="@{/PMB/accountDetails}">Profil</a>
-        <a th:href="@{/addFriend}">Ajouter Ami</a>
-        <a th:href="@{/bank-accounts}">Compte Bancaire</a>
-        <a th:href="@{/freindList}">Liste d'amis</a>
-        <a th:href="@{/transactions/history}">Historique des transaction</a>
-    </div>
+ <div class="navbar" th:fragment="navbar">
+    <a th:href="@{/home}" class="active">Accueil</a>
+    <a th:href="@{/transfers/transferHistory}">Transfert</a>
+    <a th:href="@{/PMB/accountDetails}">Profil</a>
+    <a th:href="@{/addFriend}">Ajouter Ami</a>
+    <a th:href="@{/bank-accounts}">Compte Bancaire</a>
+    <a th:href="@{/freindList}">Liste d'amis</a>
+    <a th:href="@{/transactions/history}">Historique des transaction</a>
+    <a th:href="@{/transactions/sendMoney}">Transactions</a>
+
+    <!-- Bouton de déconnexion -->
+    <form th:action="@{/logout}" method="post" style="display: inline;">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+        <button type="submit" style="background-color: #4CAF50; color: white; padding: 10px 20px; margin: 8px 0; border: none; cursor: pointer;">Se déconnecter</button>
+    </form>
+</div>
+
 </body>
 </html>
 

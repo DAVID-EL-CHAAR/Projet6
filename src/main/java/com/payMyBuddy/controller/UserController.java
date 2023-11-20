@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
@@ -30,8 +31,6 @@ import com.payMyBuddy.repository.UserRepository;
 import com.payMyBuddy.service.FriendDTO;
 import com.payMyBuddy.service.FriendService;
 import com.payMyBuddy.service.UserService;
-
-
 
 
 @Controller
@@ -139,14 +138,18 @@ public class UserController {
     }
 
     @PostMapping("/addFriend")
-    public ResponseEntity<?> addFriend(Principal principal, @RequestParam String friendEmail) {
+    public String addFriend(Principal principal, @RequestParam String friendEmail, RedirectAttributes redirectAttributes) {
         try {
             friendService.addFriend(principal.getName(), friendEmail);
-            return ResponseEntity.ok("ami ajouter avec succes");
+            return "redirect:/FsuccessPage";
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            // Ajouter un message d'erreur à redirectAttributes
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/FerrorPage";
         }
     }
+
+
 
     @GetMapping("/login")
     public String login() {
@@ -157,6 +160,17 @@ public class UserController {
     public ModelAndView showTransferFromPayMyBuddyToBankForm() {
         return new ModelAndView("addfriend");
     }
+    
+    @GetMapping("/FsuccessPage")
+    public String showSuccessPage() {
+        return "FsuccessPage"; 
+    }
+
+    @GetMapping("/FerrorPage")
+    public String showErrorPage() {
+        return "FerrorPage"; 
+    }
+
 /*
 
     @PostMapping("/login")

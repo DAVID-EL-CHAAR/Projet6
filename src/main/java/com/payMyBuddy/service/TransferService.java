@@ -31,6 +31,14 @@ public class TransferService {
 	public void transferFromBankToPayMyBuddy(User user, String rib, BigDecimal amount) throws Exception {
 	    BankAccount bankAccount = bankAccountRepository.findByRib(rib);
 	    
+	    if (amount.compareTo(BigDecimal.ONE) < 0) {
+	        throw new Exception("Le montant doit être supérieur ou égal à 1.");
+	    }
+	    
+	    if (bankAccount == null) {
+	        throw new Exception("Compte bancaire inexistant.");
+	    }
+	    
 	    if (!bankAccount.getUser().equals(user)) {
             throw new Exception("Opération non autorisée.");
             
@@ -59,16 +67,20 @@ public class TransferService {
 	}
 
 	public void transferFromPayMyBuddyToBank(User user, String rib, BigDecimal amount) throws Exception {
-	    BankAccount bankAccount = bankAccountRepository.findByRib(rib);
-	    if (!bankAccount.getUser().equals(user)) {
-            throw new Exception("Opération non autorisée.");
-        }
-	    PayMyBuddyAccount payMyBuddyAccount = payMyBuddyAccountRepository.findByUser(user);
+	    if (amount.compareTo(BigDecimal.ONE) < 0) {
+	        throw new Exception("Le montant doit être supérieur ou égal à 1.");
+	    }
 
-	    // Vérifier le solde du compte PayMyBuddy
+	    BankAccount bankAccount = bankAccountRepository.findByRib(rib);
+	    if (bankAccount == null || !bankAccount.getUser().equals(user)) {
+	        throw new Exception("Opération non autorisée ou compte bancaire inexistant.");
+	    }
+
+	    PayMyBuddyAccount payMyBuddyAccount = payMyBuddyAccountRepository.findByUser(user);
 	    if (payMyBuddyAccount.getBalance().compareTo(amount) < 0) {
 	        throw new Exception("Fonds insuffisants sur le compte PayMyBuddy.");
 	    }
+	    
 
 	    // Effectuer le transfert
 	    payMyBuddyAccount.setBalance(payMyBuddyAccount.getBalance().subtract(amount));
