@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +39,7 @@ public class TransactionService {
     
     private LocalDateTime date;
 
+    @Transactional
     public void sendMoney(String senderEmail, String recipientEmail, BigDecimal amount, String description) throws Exception {
     	
         if (amount.compareTo(BigDecimal.ONE) < 0) {
@@ -86,18 +87,7 @@ public class TransactionService {
         recordTransactionHistory(sender, recipient, amount, description);
     }
 
-    /*
-    private void recordTransactionHistory(User user, String transactionType, BigDecimal amount, String description) {
-        TransactionHistory history = new TransactionHistory();
-        history.setUser(user);
-        history.setTransactionType(transactionType);
-        history.setAmount(amount);
-        history.setDate(LocalDateTime.now());
-        history.setDescription(description);
-        transactionHistoryRepository.save(history);
-    }
-
-*/
+ 
     
     public List<Transaction> getTransactionsForUser(User user) {
         List<Transaction> sentTransactions = transactionRepository.findAllBySender(user);

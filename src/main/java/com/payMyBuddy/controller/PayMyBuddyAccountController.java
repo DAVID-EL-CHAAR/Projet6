@@ -15,6 +15,7 @@ import com.payMyBuddy.model.PayMyBuddyAccount;
 import com.payMyBuddy.model.User;
 import com.payMyBuddy.repository.PayMyBuddyAccountRepository;
 import com.payMyBuddy.repository.UserRepository;
+import com.payMyBuddy.service.PayMyBuddyAccountService;
 import com.payMyBuddy.service.TransferService;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -28,6 +29,9 @@ public class PayMyBuddyAccountController {
 	@Autowired
 	private PayMyBuddyAccountRepository payMyBuddyAccountRepository;
 		
+	@Autowired
+	private PayMyBuddyAccountService payMyBuddyAccountService;
+	
 	   @Autowired
 	    private TransferService transferService;
     
@@ -41,7 +45,7 @@ public class PayMyBuddyAccountController {
 	           PayMyBuddyAccount account = payMyBuddyAccountRepository.findByUser(user);
 	           model.addAttribute("account", account);
 
-	           // Ajouter un attribut pour indiquer si le compte doit être activé
+	           // Ajout  d'un attribut pour indiquer si le compte doit être activé
 	           model.addAttribute("activateAccount", (account == null));
 	       }
 
@@ -55,15 +59,15 @@ public class PayMyBuddyAccountController {
 	           User user = userRepository.findByEmail(principal.getName());
 	           if (user == null) {
 	               redirectAttributes.addFlashAttribute("error", "Utilisateur non trouvé.");
-	               return "redirect:/PMB/activate"; // Remplacez par votre page d'erreur
+	               return "redirect:/PMB/activate"; 
 	           }
 
-	           transferService.createAndLinkPayMyBuddyAccount(user);
+	           payMyBuddyAccountService.createAndLinkPayMyBuddyAccount(user);
 	           redirectAttributes.addFlashAttribute("success", "Compte PayMyBuddy activé avec succès.");
-	           return "redirect:/PMB/activate"; // Remplacez par votre page de succès
+	           return "redirect:/PMB/activate"; 
 	       } catch (Exception e) {
 	           redirectAttributes.addFlashAttribute("error", e.getMessage());
-	           return "redirect:/PMB/activate"; // Remplacez par votre page d'erreur
+	           return "redirect:/PMB/activate"; 
 	       }
 	   }
 

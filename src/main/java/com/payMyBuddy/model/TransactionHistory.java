@@ -1,6 +1,7 @@
 package com.payMyBuddy.model;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,6 +35,10 @@ import jakarta.persistence.ManyToOne;
 	    @Column
 	    private String description;
 	    
+	    public String getCommission() {
+	        DecimalFormat df = new DecimalFormat("0.00");
+	        return df.format(this.amount.multiply(BigDecimal.valueOf(0.005)));
+	    }
 	
 
     public Long getId() {

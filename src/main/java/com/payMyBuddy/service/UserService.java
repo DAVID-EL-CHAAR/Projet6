@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.payMyBuddy.model.User;
 import com.payMyBuddy.repository.UserRepository;
 
@@ -22,26 +24,9 @@ public class UserService{
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
-/*
-    public User registerNewUserAccount(User user) {
-        if (emailExist(user.getEmail())) {
-            // Gérer le cas où l'utilisateur existe déjà
-            throw new RuntimeException("Il existe déjà un compte avec cet email: " + user.getEmail());
-        }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setEnabled(true); // Assurez que le compte est activé
-        return userRepository.save(user);
-    }
 
 
-    private boolean emailExist(String email) {
-        return userRepository.findByEmail(email) != null;
-    }
-
-    */
-    
-
-
+    @Transactional
     public User registerNewUserAccount(User userDto) {
         if (userRepository.findByEmail(userDto.getEmail()) != null) {
             throw new RuntimeException("il y a un compte avec cette email " + userDto.getEmail());
@@ -55,7 +40,7 @@ public class UserService{
         return userRepository.save(user);
     }
 
-
+    
 }
 
 

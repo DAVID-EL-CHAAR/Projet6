@@ -41,13 +41,13 @@ public class TransferController {
         try {
             User user = userRepository.findByEmail(principal.getName());
             if (user == null) {
-                return "redirect:/transfers/errorPage"; // ou gérer différemment si nécessaire
+                return "redirect:/transfers/errorPage"; 
             }
 
             transferService.transferFromBankToPayMyBuddy(user, rib, amount);
             return "redirect:/transfers/successPage";
         } catch (Exception e) {
-            // Vous pouvez utiliser RedirectAttributes pour passer un message d'erreur
+            
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/transfers/errorPage";
         }
@@ -68,7 +68,7 @@ public class TransferController {
             transferService.transferFromPayMyBuddyToBank(user, rib, amount);
             return "redirect:/transfers/successPage";
         } catch (Exception e) {
-            // Ajouter un message d'erreur à redirectAttributes
+           
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/transfers/errorPage";
         }

@@ -34,7 +34,7 @@ public class SecurityConfig {
 	    @Bean
 	    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 	        http
-	           // .csrf(csrf -> csrf.disable()) // Toujours à désactiver en production si vous n'en avez pas besoin.
+	           // .csrf(csrf -> csrf.disable()) // Toujours à désactiver en production si on a avez pas besoin.
 	            .authorizeHttpRequests(authz -> authz
 	            	.requestMatchers("/register", "/login").permitAll() // Simplifie l'utilisation des antMatchers.
 	                .anyRequest().authenticated()
@@ -42,7 +42,7 @@ public class SecurityConfig {
 	            .formLogin(form -> form
 	                    .loginPage("/login")
 	                    .loginProcessingUrl("/login")
-	                    .usernameParameter("email") // Important si vous utilisez 'email' au lieu de 'username'
+	                    .usernameParameter("email") // Important si on utilisez 'email' au lieu de 'username'
 	                    .passwordParameter("password")
 	                    .defaultSuccessUrl("/home", true)
 	                    .failureUrl("/login?error=true")
@@ -57,25 +57,7 @@ public class SecurityConfig {
 	            
 	            return http.build();
 	        }
-	            /*
-	            .formLogin(form -> form
-	                .loginPage("/login")// Si vous avez une page de connexion personnalisée.
-	                .usernameParameter("email")
-	                .loginProcessingUrl("/login") // URL de traitement du formulaire de connexion.
-	                .defaultSuccessUrl("/home", true) // Redirection après connexion réussie.
-	                .failureUrl("/login?error=true") // Redirection après échec de connexion.
-	                .permitAll()
-	            )
-	            .logout(logout -> logout
-	                .logoutUrl("/logout") // URL de déconnexion.
-	                .logoutSuccessUrl("/login?logout=true") // Redirection après déconnexion réussie.
-	                .permitAll()
-	            );
 
-	        return http.build();
-	    }
-
-*/
   
   
     @Bean

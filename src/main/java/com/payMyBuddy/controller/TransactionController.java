@@ -52,7 +52,7 @@ public class TransactionController {
             transactionService.sendMoney(principal.getName(), recipientEmail, amount, description);
             return "redirect:/transactions/tsuccessPage";
         } catch (Exception e) {
-            // Ajouter un message d'erreur à redirectAttributes
+            
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/transactions/terrorPage";
         }

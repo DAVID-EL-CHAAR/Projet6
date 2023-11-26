@@ -19,7 +19,7 @@ import com.payMyBuddy.service.BankAccountService;
 public class BankAccountController {
 
     @Autowired
-    private BankAccountService bankAccountService; // Assurez-vous d'avoir ce service implémenté
+    private BankAccountService bankAccountService; 
     
     @Autowired
     private UserRepository userRepository;
@@ -39,7 +39,7 @@ public class BankAccountController {
     @GetMapping("/add")
     public String showAddForm(Model model) {
         model.addAttribute("bankAccount", new BankAccount());
-        return "addAccount"; // Vue à créer
+        return "addAccount"; 
     }
 
 
@@ -93,7 +93,7 @@ public class BankAccountController {
             return "redirect:/bank-accounts";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-            return "redirect:/bank-accounts/errorPage3"; // Remplacez par le chemin de votre page d'erreur
+            return "redirect:/bank-accounts/errorPage3";       
         }
     }
 
@@ -106,7 +106,7 @@ public class BankAccountController {
         if (bankAccount != null && bankAccount.getUser().getEmail().equals(principal.getName())) {
             bankAccountService.delete(id);
         }
-        // Gérer le cas où l'utilisateur n'est pas autorisé à supprimer le compte
+        
         return "redirect:/bank-accounts";
     }
     

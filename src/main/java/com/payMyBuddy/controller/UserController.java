@@ -51,75 +51,7 @@ public class UserController {
     private FriendService friendService;
     
   
-/*
-    // Endpoint pour l'inscription d'un nouvel utilisateur
-    @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody User user) {
-        try {
-            User registeredUser = userService.registerNewUserAccount(user);
-            URI location = ServletUriComponentsBuilder
-                    .fromCurrentRequest()
-                    .path("/{id}")
-                    .buildAndExpand(registeredUser.getId())
-                    .toUri();
-            return ResponseEntity.created(location).body("Utilisateur enregistré avec succès");
-        } catch (IllegalStateException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-    
-    
-    @GetMapping("/register")
-    public String showRegistrationForm(Model model) {
-        // Ajoutez un nouvel objet User au modèle si vous utilisez Thymeleaf ou une technologie similaire pour le binding de formulaire
-        model.addAttribute("user", new User());
-        return "register 1234"; // Nom de la vue (par exemple, une page HTML Thymeleaf nommée 'register.html')
-    }
-    
-    
-*/
- // Endpoint pour l'inscription d'un nouvel utilisateur
-    
-    /*
-    @PostMapping("/register")
-    public String registerUserAccount(@ModelAttribute("user") User user, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            return "register"; // Nom de la vue 
-        }
-        try {
-            User registeredUser = userService.registerNewUserAccount(user);
-            return "redirect:/user/login"; // Redirige vers la page de connexion après une inscription réussie
-        } catch (IllegalStateException e) {
-            model.addAttribute("errorMessage", e.getMessage());
-            return "register"; // Reste sur la page d'inscription si une erreur survient
-        }
-    }
 
-    @GetMapping("/register")
-    public String showRegistrationForm(Model model) {
-        
-        model.addAttribute("user", new User());
-        return "register"; // Nom de la vue (par exemple, une page HTML Thymeleaf nommée 'register.html')
-    }
-    
-    */
-    
-    /*
-    
-    @GetMapping("/register")
-    public String showRegistrationForm(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
-        return "register";
-    }
-
-    @PostMapping("/register")
-    public String registerUserAccount(@ModelAttribute("user") User userDto) {
-        userService.registerNewUserAccount(userDto);
-        return "redirect:/login";
-    }
-    
-    */
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
         model.addAttribute("user", new User());
@@ -143,7 +75,7 @@ public class UserController {
             friendService.addFriend(principal.getName(), friendEmail);
             return "redirect:/FsuccessPage";
         } catch (Exception e) {
-            // Ajouter un message d'erreur à redirectAttributes
+           
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/FerrorPage";
         }
@@ -171,85 +103,7 @@ public class UserController {
         return "FerrorPage"; 
     }
 
-/*
 
-    @PostMapping("/login")
-    public String loginUser(@ModelAttribute("user") User user, Model model) {
-        try {
-            // AuthenticationManager pour authentifier l'email et le mot de passe
-            org.springframework.security.core.Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            
-            // Rediriger vers la page d'accueil ou le tableau de bord de l'utilisateur après une connexion réussie
-            return "redirect:/user/home";
-        } catch (BadCredentialsException e) {
-           
-            model.addAttribute("loginError", "Échec de la connexion: Identifiants incorrects");
-            return "login";
-        }
-    }
-
-    // La méthode pour afficher le formulaire de connexion
-    @GetMapping("/login")
-    public String loginForm(Model model) {
-        // Assurez-vous que l'objet User est ajouté au modèle pour le binding de formulaire
-        model.addAttribute("user", new User());
-        return "login"; // Nom de la vue pour la page de connexion
-    }
-
-*/
- 
-/*
-    @GetMapping("/home")
-    public String home(Model model, @AuthenticationPrincipal User user) {
-        
-        model.addAttribute("user", user);
-        
-        // Retourne le nom de la vue pour la page d'accueil
-        return "home"; 
-    }
-
-    */
-    /*
-    @GetMapping("/home")
-    public String home(Principal principal, Model model) {
-        // Récupérez l'email depuis le Principal, qui est fourni par Spring Security
-        String email = principal.getName();
-        // Utilisez le UserRepository pour charger l'entité User complète
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
-            // Gérez l'erreur si l'utilisateur n'est pas trouvé, éventuellement en renvoyant une vue d'erreur.
-            return "error";
-        }
-        // Ajoutez l'utilisateur au modèle pour l'utiliser dans la vue
-        model.addAttribute("user", user);
-        return "home";
-    }
-
-   */
-   /* @GetMapping("/home")
-    public String home(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
-        if (userDetails != null) {
-            User user = userDetails.getUser(); // Si CustomUserDetails contient une référence à votre entité User
-            model.addAttribute("user", user);
-        }
-        return "home"; // Retourne le nom de la vue Thymeleaf
-    }
-
-*/
-    /*
-    @GetMapping("/home")
-    public String home(Model model, Principal principal) {
-        String email = principal.getName(); // Récupère le nom (email) de l'utilisateur connecté
-        User user = userRepository.findByEmail(email);
-        model.addAttribute("user", user);
-        
-        
-        return "home";
-    }
-    
-     */
     
     @GetMapping("/home")
     public String home(Model model, Principal principal) {
@@ -270,14 +124,14 @@ public class UserController {
             if (friendsList != null && !friendsList.isEmpty()) {
                 model.addAttribute("friends", friendsList);
             } else {
-                // Si la liste des amis est vide ou nulle, on peut ajouter un message ou gérer autrement
+                // Si la liste des amis est vide ou nulle
                 model.addAttribute("noFriendsMessage", "Vous n'avez pas encore ajouté d'amis.");
             }
         } else {
-            // Si l'utilisateur n'est pas trouvé, ajouter un message et éventuellement rediriger
+            // Si l'utilisateur n'est pas trouvé, 
             model.addAttribute("errorMessage", "Utilisateur non trouvé.");
-            // Vous pouvez également rediriger vers une page d'erreur ou d'accueil
-            // return "errorPage"; // Par exemple, si vous avez une page d'erreur spécifique
+            // on peut également rediriger vers une page d'erreur ou d'accueil
+            // return "errorPage"; 
         }
         
         // Retourne le nom de la vue à afficher

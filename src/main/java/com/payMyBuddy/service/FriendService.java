@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.payMyBuddy.model.Friend;
 import com.payMyBuddy.model.User;
@@ -21,6 +22,7 @@ public class FriendService {
     @Autowired
     private UserRepository userRepository;
     
+    @Transactional
     public void addFriend(String userEmail, String friendEmail) throws Exception {
         if (userEmail.equalsIgnoreCase(friendEmail)) {
             throw new Exception("Vous ne pouvez pas vous ajouter vous-même comme ami");
@@ -52,6 +54,7 @@ public class FriendService {
         friendRepository.save(friendForFriendUser);
     }
     
+    @Transactional(readOnly = true)
     public List<FriendDTO> getFriends(String userEmail) {
         User user = userRepository.findByEmail(userEmail);
         if (user == null) {
@@ -60,7 +63,7 @@ public class FriendService {
 
         List<Friend> friends = friendRepository.findAllByUser(user);
         return friends.stream().map(this::convertToFriendDTO).collect(Collectors.toList());
-    }
+    }                          //(friend -> this.convertToFriendDTO(friend))
 
     private FriendDTO convertToFriendDTO(Friend friend) {
         User friendUser = userRepository.findByEmail(friend.getFriendEmail());

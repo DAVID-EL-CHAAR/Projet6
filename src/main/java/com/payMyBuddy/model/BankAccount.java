@@ -33,7 +33,7 @@ public class BankAccount {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    // getters and setters
+   
     
     public Long getId() {
         return id;

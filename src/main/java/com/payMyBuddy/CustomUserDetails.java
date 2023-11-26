@@ -1,3 +1,4 @@
+
 package com.payMyBuddy;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -20,7 +21,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Ici vous pouvez retourner les autorités/roles de l'utilisateur si nécessaire.
+        // Ici on peut retourner les autorités/roles de l'utilisateur si nécessaire.
         return Collections.emptyList();
     }
 
@@ -34,7 +35,7 @@ public class CustomUserDetails implements UserDetails {
         return user.getEmail(); 
     }
 
-    // Les méthodes suivantes peuvent retourner des valeurs fixes si vous ne gérez pas ces propriétés
+    // Les méthodes suivantes peuvent retourner des valeurs fixes si je les gere pas
     @Override
     public boolean isAccountNonExpired() {
         return true; 
@@ -52,7 +53,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return user.isEnabled(); // Assurez-vous que votre entité User a cette propriété
+        return user.isEnabled(); // je dois m'assurez que  l'entité User a cette propriété quand le met
     }
 
     // Getter pour accéder à l'utilisateur complet depuis l'objet UserDetails si nécessaire

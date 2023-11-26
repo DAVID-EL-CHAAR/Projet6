@@ -86,6 +86,7 @@ public class User {
         this.enabled = enabled;
     }
 
+    
     public void addFriend(Friend friend) {
         friends.add(friend);
         friend.setUser(this);
@@ -95,6 +96,7 @@ public class User {
         friends.remove(friend);
         friend.setUser(null);
     }
+    
 }
     
 

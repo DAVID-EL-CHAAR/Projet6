@@ -14,12 +14,14 @@
         <th>Date</th>
         <th>Destinataire</th>
         <th>Montant</th>
+        <th>Frais</th>
         <th>Description</th>
     </tr>
     <tr th:each="transaction : ${sentTransactions}">
         <td th:text="${#temporals.format(transaction.date, 'dd/MM/yyyy HH:mm:ss')}"></td>
         <td th:text="${transaction.recipient.email}"></td>
         <td th:text="${transaction.amount}"></td>
+        <td th:text="${transaction.getCommission()}"></td> 
         <td th:text="${transaction.description}"></td>
     </tr>
 </table>
@@ -30,12 +32,14 @@
         <th>Date</th>
         <th>Expéditeur</th>
         <th>Montant</th>
+        <th>Frais</th>
         <th>Description</th>
     </tr>
     <tr th:each="transaction : ${receivedTransactions}">
         <td th:text="${#temporals.format(transaction.date, 'dd/MM/yyyy HH:mm:ss')}"></td>
         <td th:text="${transaction.sender.email}"></td>
         <td th:text="${transaction.amount}"></td>
+        <td th:text="${transaction.getCommission()}"></td>
         <td th:text="${transaction.description}"></td>
     </tr>
 </table>

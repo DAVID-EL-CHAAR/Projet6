@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import com.payMyBuddy.model.BankAccount;
 import com.payMyBuddy.model.User;
 import com.payMyBuddy.repository.BankAccountRepository;
@@ -25,7 +25,7 @@ public class BankAccountService {
 	@Autowired
 	private BankAccountRepository bankAccountRepository;
 	
-
+	@Transactional
 	public void addBankAccountToUser(String userEmail, String rib, BigDecimal initialBalance, String nom, String prenom) throws Exception {
 	    
 	    // Vérifier si le RIB existe déjà
@@ -55,6 +55,7 @@ public class BankAccountService {
 	    bankAccountRepository.save(bankAccount);
 	}
 
+	@Transactional
 	public void updateBankAccount(Long bankAccountId, String rib, BigDecimal newBalance, String nom, String prenom) throws Exception {
 	    BankAccount existingAccount = bankAccountRepository.findByRib(rib);
 	    if (existingAccount != null && !existingAccount.getId().equals(bankAccountId)) {
@@ -81,26 +82,31 @@ public class BankAccountService {
 
 
 	// Récupérer tous les comptes bancaires
+	@Transactional(readOnly = true)
     public List<BankAccount> findAll() {
         return bankAccountRepository.findAll();
     }
     
+	@Transactional(readOnly = true)
     public List<BankAccount> findAllByUser(User user) {
         return bankAccountRepository.findAllByUser(user);
     }
 
     // Trouver un compte bancaire par ID
+	@Transactional(readOnly = true)
     public BankAccount findById(Long id) {
         Optional<BankAccount> result = bankAccountRepository.findById(id);
         return result.orElse(null); // Vous pouvez également gérer les exceptions ici
     }
 
     // Enregistrer un compte bancaire
+	@Transactional
     public void save(BankAccount bankAccount) {
         bankAccountRepository.save(bankAccount);
     }
 
     // Supprimer un compte bancaire par ID
+	@Transactional
     public void delete(Long id) {
         bankAccountRepository.deleteById(id);
     }

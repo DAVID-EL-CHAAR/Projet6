@@ -2,6 +2,8 @@ package com.payMyBuddy.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,7 +29,7 @@ public class TransferService {
 	private TransferHistoryRepository transferHistoryRepository;
 
 	
-	
+	@Transactional
 	public void transferFromBankToPayMyBuddy(User user, String rib, BigDecimal amount) throws Exception {
 	    BankAccount bankAccount = bankAccountRepository.findByRib(rib);
 	    
@@ -66,6 +68,7 @@ public class TransferService {
 	    transferHistoryRepository.save(history);
 	}
 
+	@Transactional
 	public void transferFromPayMyBuddyToBank(User user, String rib, BigDecimal amount) throws Exception {
 	    if (amount.compareTo(BigDecimal.ONE) < 0) {
 	        throw new Exception("Le montant doit être supérieur ou égal à 1.");
@@ -98,13 +101,9 @@ public class TransferService {
 	    transferHistoryRepository.save(history);
 	}
 	
-	  public void createAndLinkPayMyBuddyAccount(User user) {
-	        PayMyBuddyAccount newAccount = new PayMyBuddyAccount();
-	        newAccount.setUser(user);
-	        newAccount.setBalance(BigDecimal.ZERO); // Commence avec un solde de 0
-	        payMyBuddyAccountRepository.save(newAccount);
-	    }
 	  
+	  
+	  @Transactional(readOnly = true)
 	  public List<TransferHistory> getTransferHistory(Long userId) {
 		    return transferHistoryRepository.findByUserId(userId);
 		}

@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import com.payMyBuddy.model.BankAccount;
 import com.payMyBuddy.model.User;
 
+
+
 @Repository
 public interface BankAccountRepository extends JpaRepository<BankAccount, Long> {
     BankAccount findByUser(User user);
