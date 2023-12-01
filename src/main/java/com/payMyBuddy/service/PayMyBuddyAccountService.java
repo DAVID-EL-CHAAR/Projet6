@@ -21,5 +21,9 @@ public class PayMyBuddyAccountService {
 	        newAccount.setBalance(BigDecimal.ZERO); // Commence avec un solde de 0
 	        payMyBuddyAccountRepository.save(newAccount);
 	    }
+	 
+	 public PayMyBuddyAccount findByUser(User user) {
+	        return payMyBuddyAccountRepository.findByUser(user);
+	    }
 
 }

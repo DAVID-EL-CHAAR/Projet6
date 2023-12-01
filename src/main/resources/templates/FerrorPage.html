@@ -5,6 +5,8 @@
     <title>Transfert Réussi</title>
 </head>
 <body>
+<div th:replace="navbar :: navbar"></div>
+
     <h1>Erreur</h1>
    <div th:if="${errorMessage}">
     <p th:text="${errorMessage}"></p>

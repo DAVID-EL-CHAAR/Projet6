@@ -32,14 +32,17 @@ public class UserService{
             throw new RuntimeException("il y a un compte avec cette email " + userDto.getEmail());
         }
         User user = new User();
-        user.setNom(userDto.getNom()); // Assurez-vous que le nom est aussi transféré
-        user.setPrenom(userDto.getPrenom()); // Assurez-vous que le prénom est aussi transféré
+        user.setNom(userDto.getNom()); 
+        user.setPrenom(userDto.getPrenom()); 
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        user.setEnabled(true); // Activez le compte directement si c'est votre logique métier
+        user.setEnabled(true); // Activez le compte 
         return userRepository.save(user);
     }
 
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
     
 }
 

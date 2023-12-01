@@ -7,12 +7,17 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.math.BigDecimal;
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpSession;
 import com.payMyBuddy.model.BankAccount;
 import com.payMyBuddy.model.User;
 import com.payMyBuddy.repository.UserRepository;
 import com.payMyBuddy.service.BankAccountService;
+import com.payMyBuddy.service.UserService;
+import com.payMyBuddy.util.CryptoUtil;
 
 @Controller
 @RequestMapping("/bank-accounts")
@@ -23,17 +28,29 @@ public class BankAccountController {
     
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private UserService userService;
    
 
-    // Afficher la liste des comptes bancaires
     @GetMapping
-    public String listBankAccounts(Model model, Principal principal) {
+    public String listBankAccounts(Model model, Principal principal) throws Exception {
         String userEmail = principal.getName();
-        User user = userRepository.findByEmail(userEmail);
+        User user = userService.findByEmail(userEmail);
         List<BankAccount> bankAccounts = bankAccountService.findAllByUser(user);
+
+        // Créer une Map pour stocker les ID cryptés
+        Map<Long, String> encryptedIds = new HashMap<>();
+        for (BankAccount account : bankAccounts) {
+            String encryptedId = CryptoUtil.encryptId(account.getId());
+            encryptedIds.put(account.getId(), encryptedId);
+        }
+
         model.addAttribute("bankAccounts", bankAccounts);
+        model.addAttribute("encryptedIds", encryptedIds);
         return "listAccount";
     }
+
 
     // Afficher le formulaire pour ajouter un nouveau compte bancaire
     @GetMapping("/add")
@@ -66,6 +83,82 @@ public class BankAccountController {
 
 
 
+    @GetMapping("/edit/{encryptedId}")
+    public String showEditForm(@PathVariable String encryptedId, Model model, Principal principal, RedirectAttributes redirectAttrs) {
+        try {
+            // Décryptage de l'ID
+            Long id = CryptoUtil.decryptId(encryptedId);
+
+            BankAccount bankAccount = bankAccountService.findById(id);
+
+            if (bankAccount == null) {
+                redirectAttrs.addFlashAttribute("errorMessage", "Compte bancaire non trouvé.");
+                return "redirect:/bank-accounts/errorPage3";
+            }
+
+            if (!bankAccount.getUser().getEmail().equals(principal.getName())) {
+                redirectAttrs.addFlashAttribute("errorMessage", "Vous n'êtes pas autorisé à modifier ce compte.");
+                return "redirect:/bank-accounts/errorPage3";
+            }
+
+            model.addAttribute("bankAccount", bankAccount);
+           
+            model.addAttribute("encryptedId", encryptedId);
+            return "editAccount";
+        } catch (Exception e) {
+            redirectAttrs.addFlashAttribute("errorMessage", "Erreur de traitement de l'ID.");
+            return "redirect:/bank-accounts/errorPage3";
+        }
+    }
+
+
+
+    @PostMapping("/edit")
+    public String updateBankAccount(@RequestParam("encryptedId") String encryptedId, @ModelAttribute BankAccount bankAccount, RedirectAttributes redirectAttributes) {
+        try {
+            // Décryptage de l'ID
+            Long id = CryptoUtil.decryptId(encryptedId);
+            bankAccount.setId(id);
+
+            // Mise à jour du compte bancaire
+            bankAccountService.updateBankAccount(bankAccount.getId(), bankAccount.getRib(), bankAccount.getBalance(), bankAccount.getNom(), bankAccount.getPrenom());
+            return "redirect:/bank-accounts";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/bank-accounts/errorPage3";       
+        }
+    }
+
+
+
+
+    // Supprimer un compte bancaire
+    @GetMapping("/delete/{encryptedId}")
+    public String deleteBankAccount(@PathVariable String encryptedId, Principal principal) {
+        try {
+            // Décryptage de l'ID
+            Long id = CryptoUtil.decryptId(encryptedId);
+
+            BankAccount bankAccount = bankAccountService.findById(id);
+            if (bankAccount != null && bankAccount.getUser().getEmail().equals(principal.getName())) {
+                bankAccountService.delete(id);
+            }
+        } catch (Exception e) {
+            // Gérer l'exception
+            
+        }
+        
+        return "redirect:/bank-accounts";
+    }
+
+    
+    
+    @GetMapping("/errorPage3")
+    public String showErrorPage2() {
+        return "aPageError"; 
+    }
+
+    /*
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model, Principal principal, RedirectAttributes redirectAttrs) {
         BankAccount bankAccount = bankAccountService.findById(id);
@@ -79,7 +172,7 @@ public class BankAccountController {
             redirectAttrs.addFlashAttribute("errorMessage", "Vous n'êtes pas autorisé à modifier ce compte.");
             return "redirect:/bank-accounts/errorPage3";
         }
-
+        
         model.addAttribute("bankAccount", bankAccount);
         return "editAccount";
     }
@@ -89,6 +182,7 @@ public class BankAccountController {
     @PostMapping("/edit")
     public String updateBankAccount(@ModelAttribute BankAccount bankAccount, RedirectAttributes redirectAttributes) {
         try {
+            // Utiliser bankAccountId au lieu de bankAccount.getId()
             bankAccountService.updateBankAccount(bankAccount.getId(), bankAccount.getRib(), bankAccount.getBalance(), bankAccount.getNom(), bankAccount.getPrenom());
             return "redirect:/bank-accounts";
         } catch (Exception e) {
@@ -96,11 +190,8 @@ public class BankAccountController {
             return "redirect:/bank-accounts/errorPage3";       
         }
     }
-
-
-
-    // Supprimer un compte bancaire
-    @GetMapping("/delete/{id}")
+    
+     @GetMapping("/delete/{id}")
     public String deleteBankAccount(@PathVariable Long id, Principal principal) {
         BankAccount bankAccount = bankAccountService.findById(id);
         if (bankAccount != null && bankAccount.getUser().getEmail().equals(principal.getName())) {
@@ -109,12 +200,8 @@ public class BankAccountController {
         
         return "redirect:/bank-accounts";
     }
-    
-    
-    @GetMapping("/errorPage3")
-    public String showErrorPage2() {
-        return "aPageError"; 
-    }
+ 
+ */
 
 
 }

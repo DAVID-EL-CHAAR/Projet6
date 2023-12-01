@@ -60,6 +60,14 @@ public class TransactionService {
 
         PayMyBuddyAccount senderAccount = payMyBuddyAccountRepository.findByUser(sender);
         PayMyBuddyAccount recipientAccount = payMyBuddyAccountRepository.findByUser(recipient);
+        
+        // Vérifier si les comptes PayMyBuddy existent
+        if (senderAccount == null) {
+            throw new Exception("votre compte payMyBuddy n'est pas encore activer veuillez l'activer en vous rendant dans la page profile.");
+        }
+        if (recipientAccount == null) {
+            throw new Exception("Le compte PayMyBuddy du destinataire est inexistant ou pas encore activer .");
+        }
 
         BigDecimal commission = amount.multiply(BigDecimal.valueOf(0.005)); // 0.5% commission
         if (senderAccount.getBalance().compareTo(amount.add(commission)) < 0) {
@@ -87,35 +95,8 @@ public class TransactionService {
         recordTransactionHistory(sender, recipient, amount, description);
     }
 
- 
     
-    public List<Transaction> getTransactionsForUser(User user) {
-        List<Transaction> sentTransactions = transactionRepository.findAllBySender(user);
-        List<Transaction> receivedTransactions = transactionRepository.findAllByRecipient(user);
-        
-        // Fusionner les listes de transactions envoyées et reçues
-        List<Transaction> allTransactions = new ArrayList<>();
-        allTransactions.addAll(sentTransactions);
-        allTransactions.addAll(receivedTransactions);
-
-        // Trier les transactions par date, si nécessaire
-        allTransactions.sort(Comparator.comparing(Transaction::getDate));
-// Assurez-vous que Transaction a un champ 'date'
-
-        return allTransactions;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
     
-    public List<Transaction> getSentTransactions(User user) {
-        return transactionRepository.findAllBySender(user);
-    }
-
-    public List<Transaction> getReceivedTransactions(User user) {
-        return transactionRepository.findAllByRecipient(user);
-    }
     private void recordTransactionHistory(User sender, User recipient, BigDecimal amount, String description) {
         TransactionHistory history = new TransactionHistory();
         history.setSender(sender);
@@ -128,15 +109,11 @@ public class TransactionService {
 
 
 
-
-
-    public List<Transaction> getSentTransactions(Long userId) {
-        return transactionRepository.findBySenderId(userId);
+    public List<TransactionHistory> findBySender(User sender) {
+        return transactionHistoryRepository.findBySender(sender);
     }
 
-    public List<Transaction> getReceivedTransactions(Long userId) {
-        return transactionRepository.findByRecipientId(userId);
+    public List<TransactionHistory> findByRecipient(User recipient) {
+        return transactionHistoryRepository.findByRecipient(recipient);
     }
-
-    
 }

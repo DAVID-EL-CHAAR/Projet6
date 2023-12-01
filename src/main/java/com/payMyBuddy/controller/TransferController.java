@@ -15,6 +15,7 @@ import com.payMyBuddy.model.User;
 import com.payMyBuddy.repository.PayMyBuddyAccountRepository;
 import com.payMyBuddy.repository.UserRepository;
 import com.payMyBuddy.service.TransferService;
+import com.payMyBuddy.service.UserService;
 
 import java.math.BigDecimal;
 import java.security.Principal;
@@ -31,6 +32,9 @@ public class TransferController {
     
     @Autowired
 	private PayMyBuddyAccountRepository payMyBuddyAccountRepository;
+    
+    @Autowired
+	private UserService userService;
 	
 
     @PostMapping("/bankToPayMyBuddy")
@@ -39,7 +43,7 @@ public class TransferController {
                                                @RequestParam BigDecimal amount, 
                                                RedirectAttributes redirectAttributes) {
         try {
-            User user = userRepository.findByEmail(principal.getName());
+            User user = userService.findByEmail(principal.getName());
             if (user == null) {
                 return "redirect:/transfers/errorPage"; 
             }
@@ -60,7 +64,7 @@ public class TransferController {
                                                @RequestParam BigDecimal amount,
                                                RedirectAttributes redirectAttributes) {
         try {
-            User user = userRepository.findByEmail(principal.getName());
+            User user = userService.findByEmail(principal.getName());
             if (user == null) {
                 return "redirect:/transfers/errorPage";
             }
@@ -77,7 +81,7 @@ public class TransferController {
 
 @GetMapping("/transferHistory")
 public ModelAndView transferHistory(Principal principal) {
-    User user = userRepository.findByEmail(principal.getName());
+    User user = userService.findByEmail(principal.getName());
     List<TransferHistory> history = transferService.getTransferHistory(user.getId());
 
     ModelAndView modelAndView = new ModelAndView("transferHistory");

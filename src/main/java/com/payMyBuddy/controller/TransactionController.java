@@ -22,6 +22,7 @@ import com.payMyBuddy.model.User;
 import com.payMyBuddy.repository.TransactionHistoryRepository;
 import com.payMyBuddy.repository.UserRepository;
 import com.payMyBuddy.service.TransactionService;
+import com.payMyBuddy.service.UserService;
 
 @Controller
 @RequestMapping("/transactions")
@@ -32,6 +33,9 @@ public class TransactionController {
 
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+	private UserService userService;
     
     @Autowired
     private TransactionHistoryRepository transactionHistoryRepository;
@@ -62,15 +66,15 @@ public class TransactionController {
     
     @GetMapping("/history")
     public ModelAndView transactionHistory(Principal principal) {
-        User user = userRepository.findByEmail(principal.getName());
+        User user = userService.findByEmail(principal.getName());
         if (user == null) {
             return new ModelAndView("errorPage");
         }
 
-        List<TransactionHistory> sentTransactions = transactionHistoryRepository
+        List<TransactionHistory> sentTransactions = transactionService
             .findBySender(user);
 
-        List<TransactionHistory> receivedTransactions = transactionHistoryRepository
+        List<TransactionHistory> receivedTransactions = transactionService
             .findByRecipient(user);
 
         ModelAndView modelAndView = new ModelAndView("historicTransaction");
@@ -80,7 +84,7 @@ public class TransactionController {
     }
 
 
-
+/*
 
     @GetMapping("/sent")
     public ResponseEntity<List<Transaction>> getSentTransactions(Principal principal) {
@@ -95,7 +99,7 @@ public class TransactionController {
         List<Transaction> receivedTransactions = transactionService.getReceivedTransactions(user.getId());
         return ResponseEntity.ok(receivedTransactions);
     }
-    
+    */
     @GetMapping("/tsuccessPage")
     public String showSuccessPage() {
         return "tsuccessPage"; 

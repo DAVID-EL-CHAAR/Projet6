@@ -7,7 +7,6 @@ import java.util.List;
 import javax.naming.AuthenticationException;
 
 import org.apache.maven.artifact.repository.Authentication;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +22,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-
 import com.payMyBuddy.CustomUserDetails;
 import com.payMyBuddy.model.Friend;
 import com.payMyBuddy.model.User;
@@ -50,7 +48,7 @@ public class UserController {
     @Autowired
     private FriendService friendService;
     
-  
+    
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
@@ -111,13 +109,13 @@ public class UserController {
         String email = principal.getName();
         
         // Trouve l'utilisateur par son email
-        User user = userRepository.findByEmail(email);
+        User user = userService.findByEmail(email);
         
-        // Assurez-vous que l'utilisateur existe
+        // Assure que user existe
         if (user != null) {
             model.addAttribute("user", user);
             
-            // Récupère la liste des amis de l'utilisateur
+            // Récupère la liste des amis de user
             List<FriendDTO> friendsList = friendService.getFriends(user.getEmail());
             
             // Vérifie si la liste des amis n'est pas vide
@@ -130,7 +128,7 @@ public class UserController {
         } else {
             // Si l'utilisateur n'est pas trouvé, 
             model.addAttribute("errorMessage", "Utilisateur non trouvé.");
-            // on peut également rediriger vers une page d'erreur ou d'accueil
+            
             // return "errorPage"; 
         }
         

@@ -25,20 +25,23 @@ import com.payMyBuddy.model.User;
 import com.payMyBuddy.repository.UserRepository;
 import com.payMyBuddy.service.FriendDTO;
 import com.payMyBuddy.service.FriendService;
+import com.payMyBuddy.service.UserService;
 
 @Controller
 @RequestMapping
 public class FriendController {
     
-    @Autowired
-    private FriendService friendService;
-    
-    private final UserRepository userRepository;
+	   private final FriendService friendService;
+	    private final UserRepository userRepository;
+	   
+	    private UserService userService;
 
-    @Autowired
-    public FriendController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+	    @Autowired
+	    public FriendController(FriendService friendService, UserRepository userRepository, UserService userService) {
+	        this.friendService = friendService;
+	        this.userRepository = userRepository;
+	        this.userService = userService;
+	    }
 
     
     @GetMapping("/freindList")
@@ -47,7 +50,7 @@ public class FriendController {
         String email = principal.getName();
         
         // Trouve l'utilisateur par son email
-        User user = userRepository.findByEmail(email);
+        User user = userService.findByEmail(email);
         
         // Récupère la liste des amis de l'utilisateur
         List<FriendDTO> friendsList = friendService.getFriends(user.getEmail());
@@ -55,7 +58,7 @@ public class FriendController {
         if (friendsList != null && !friendsList.isEmpty()) {
             model.addAttribute("friends", friendsList);
         } else {
-            // Si la liste des amis est vide ou nulle, on peut ajouter un message ou gérer autrement
+            //  ajouter un message ou gérer autrement (a plus tard)
             model.addAttribute("noFriendsMessage", "Vous n'avez pas encore ajouté d'amis.");
         }
     

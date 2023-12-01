@@ -70,13 +70,7 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
     
-    /*
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-    }
-*/
-
+ 
    
 }
 

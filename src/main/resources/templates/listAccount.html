@@ -27,8 +27,8 @@
             <td th:text="${account.rib}"></td>
             <td th:text="${account.balance}"></td>
             <td>
-                <a th:href="@{/bank-accounts/edit/{id}(id=${account.id})}">Modifier</a>
-                <a th:href="@{/bank-accounts/delete/{id}(id=${account.id})}">Supprimer</a>
+               <a th:href="@{/bank-accounts/edit/{encryptedId}(encryptedId=${encryptedIds[account.id]})}">Modifier</a>
+            <a th:href="@{/bank-accounts/delete/{encryptedId}(encryptedId=${encryptedIds[account.id]})}">Supprimer</a>
             </td>
         </tr>
     </tbody>

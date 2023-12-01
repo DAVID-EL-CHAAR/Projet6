@@ -17,6 +17,8 @@ import com.payMyBuddy.repository.PayMyBuddyAccountRepository;
 import com.payMyBuddy.repository.UserRepository;
 import com.payMyBuddy.service.PayMyBuddyAccountService;
 import com.payMyBuddy.service.TransferService;
+import com.payMyBuddy.service.UserService;
+
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -28,6 +30,9 @@ public class PayMyBuddyAccountController {
 	
 	@Autowired
 	private PayMyBuddyAccountRepository payMyBuddyAccountRepository;
+	
+	@Autowired
+	private UserService userService;
 		
 	@Autowired
 	private PayMyBuddyAccountService payMyBuddyAccountService;
@@ -39,13 +44,13 @@ public class PayMyBuddyAccountController {
 	   @GetMapping("/accountDetails")
 	   public String accountDetails(Model model, Principal principal) {
 	       String email = principal.getName();
-	       User user = userRepository.findByEmail(email);
+	       User user = userService.findByEmail(email);
 	       
 	       if (user != null) {
-	           PayMyBuddyAccount account = payMyBuddyAccountRepository.findByUser(user);
+	           PayMyBuddyAccount account = payMyBuddyAccountService.findByUser(user);
 	           model.addAttribute("account", account);
 
-	           // Ajout  d'un attribut pour indiquer si le compte doit être activé
+	           //  attribut pour indiquer si le compte doit être activé
 	           model.addAttribute("activateAccount", (account == null));
 	       }
 
@@ -56,7 +61,7 @@ public class PayMyBuddyAccountController {
 	   @PostMapping("/activatePayMyBuddyAccount")
 	   public String activatePayMyBuddyAccount(Principal principal, RedirectAttributes redirectAttributes) {
 	       try {
-	           User user = userRepository.findByEmail(principal.getName());
+	           User user = userService.findByEmail(principal.getName());
 	           if (user == null) {
 	               redirectAttributes.addFlashAttribute("error", "Utilisateur non trouvé.");
 	               return "redirect:/PMB/activate"; 
@@ -75,10 +80,10 @@ public class PayMyBuddyAccountController {
 	@GetMapping("/activatePayMyBuddyAccount")
 	public ModelAndView showActivatePayMyBuddyAccountForm(Principal principal) {
 	    ModelAndView modelAndView = new ModelAndView("PMBAccount");
-	    User user = userRepository.findByEmail(principal.getName());
+	    User user = userService.findByEmail(principal.getName());
 
 	    // Vérifier si l'utilisateur a déjà un compte PayMyBuddy
-	    PayMyBuddyAccount existingAccount = payMyBuddyAccountRepository.findByUser(user);
+	    PayMyBuddyAccount existingAccount = payMyBuddyAccountService.findByUser(user);
 	    if (existingAccount != null) {
 	        modelAndView.addObject("accountAlreadyActivated", true);
 	    } else {

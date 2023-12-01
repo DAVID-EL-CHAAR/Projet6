@@ -96,7 +96,7 @@ public class BankAccountService {
 	@Transactional(readOnly = true)
     public BankAccount findById(Long id) {
         Optional<BankAccount> result = bankAccountRepository.findById(id);
-        return result.orElse(null); // Vous pouvez également gérer les exceptions ici
+        return result.orElse(null); 
     }
 
     // Enregistrer un compte bancaire

@@ -38,15 +38,19 @@ public class TransferService {
 	    }
 	    
 	    if (bankAccount == null) {
-	        throw new Exception("Compte bancaire inexistant.");
+	        throw new Exception("Compte bancaire inexistant");
 	    }
 	    
 	    if (!bankAccount.getUser().equals(user)) {
-            throw new Exception("Opération non autorisée.");
+            throw new Exception("Opération non autorisée car ce compte ne vous apparitient pas ou vous n'avez pas encore creer un compte bancaire");
             
         }
 	    PayMyBuddyAccount payMyBuddyAccount = payMyBuddyAccountRepository.findByUser(user);
 
+	    if (payMyBuddyAccount == null) {
+	        throw new Exception("Veuillez activer votre Compte PayMyBuddy ");
+	    }
+	    
 	    // Vérifier le solde du compte bancaire
 	    if (bankAccount.getBalance().compareTo(amount) < 0) {
 	    	throw new Exception("Fonds insuffisants sur le compte bancaire.");
@@ -61,7 +65,7 @@ public class TransferService {
 	    
 	    TransferHistory history = new TransferHistory();
 	    history.setFromAccount(rib);
-	    history.setToAccount("PayMyBuddyAccount"); // Ou un identifiant spécifique
+	    history.setToAccount("PayMyBuddyAccount"); 
 	    history.setAmount(amount);
 	    history.setTransferDate(LocalDateTime.now());
 	    history.setUser(user);
@@ -80,6 +84,11 @@ public class TransferService {
 	    }
 
 	    PayMyBuddyAccount payMyBuddyAccount = payMyBuddyAccountRepository.findByUser(user);
+	    
+	    if (payMyBuddyAccount == null) {
+	        throw new Exception("Veuillez activer votre Compte PayMyBuddy ");
+	    }
+	    
 	    if (payMyBuddyAccount.getBalance().compareTo(amount) < 0) {
 	        throw new Exception("Fonds insuffisants sur le compte PayMyBuddy.");
 	    }
@@ -93,7 +102,7 @@ public class TransferService {
 	    payMyBuddyAccountRepository.save(payMyBuddyAccount);
 	    
 	    TransferHistory history = new TransferHistory();
-	    history.setFromAccount("PayMyBuddyAccount"); // Ou un identifiant spécifique
+	    history.setFromAccount("PayMyBuddyAccount"); 
 	    history.setToAccount(rib);
 	    history.setAmount(amount);
 	    history.setTransferDate(LocalDateTime.now());

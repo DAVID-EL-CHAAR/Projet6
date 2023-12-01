@@ -91,47 +91,5 @@ import jakarta.persistence.ManyToOne;
     }
     
 
-    /*@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    @Column(nullable = false)
-    private String transactionType; // par exemple, "Sent" ou "Received"
-
-    @Column(nullable = false)
-    private BigDecimal amount;
-
-    @Column
-    private LocalDateTime date;
-
-    @Column
-    private String description;
-    
-    @Column
-    private String senderEmail;
-
-    @Column
-    private String recipientEmail;
-    
-       public String getSenderEmail() {
-        return senderEmail;
-    }
-
-    public void setSenderEmail(String senderEmail) {
-        this.senderEmail = senderEmail;
-    }
-
-    public String getRecipientEmail() {
-        return recipientEmail;
-    }
-
-    public void setRecipientEmail(String recipientEmail) {
-        this.recipientEmail = recipientEmail;
-    }
-    
-    */
 }
