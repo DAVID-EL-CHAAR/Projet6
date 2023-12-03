@@ -2,33 +2,46 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Friends List</title>
+    <title>Liste d'Amis</title>
+    <!-- Inclure le CSS de Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <style>
-        table, th, td {
-            border: 1px solid black;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 5px;
-            text-align: left;
+       
+        h1 {
+            font-size: 3em;
+            color: #333;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 0.3em;
         }
     </style>
+    
 </head>
 <body>
-    <div th:replace="navbar :: navbar"></div>
+    
+    <div th:replace="navbar :: navbar"></div> 
+    
+     <h1>Liste D'Amis</h1>
 
+    
     <div th:if="${friends}">
-        <table>
-            <tr>
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>Email</th>
-            </tr>
-            <tr th:each="friend : ${friends}">
-                <td th:text="${friend.nom}"></td>
-                <td th:text="${friend.prenom}"></td>
-                <td th:text="${friend.email}"></td>
-            </tr>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="friend : ${friends}">
+                    <th scope="row" th:text="${friendStat.index}">1</th>
+                    <td th:text="${friend.nom}">Nom</td>
+                    <td th:text="${friend.prenom}">Prénom</td>
+                    <td th:text="${friend.email}">Email</td>
+                </tr>
+            </tbody>
         </table>
     </div>
 
@@ -37,3 +50,4 @@
     </div>
 </body>
 </html>
+

@@ -61,7 +61,7 @@ public class TransferControllerTest {
     @Test
     public void testTransferFromBankToPayMyBuddy_Success() throws Exception {
         String userEmail = "user@example.com";
-        User user = new User(); // Assumez que User a un constructeur par défaut
+        User user = new User(); 
         user.setEmail(userEmail);
 
         when(mockUserService.findByEmail(userEmail)).thenReturn(user);

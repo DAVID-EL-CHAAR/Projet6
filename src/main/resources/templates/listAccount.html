@@ -3,37 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <title>Liste des Comptes Bancaires</title>
-    <!-- Ajoutez vos feuilles de style ou scripts si nécessaire -->
+    <!-- Feuille de style Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 </head>
 <body>
 
 <div th:replace="navbar :: navbar"></div>
 
-<h2>Liste des Comptes Bancaires</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Nom</th>
-            <th>Prenom</th>
-            <th>N° RIB</th>
-            <th>Solde</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:each="account : ${bankAccounts}">
-            <td th:text="${account.nom}"></td>
-            <td th:text="${account.prenom}"></td>
-            <td th:text="${account.rib}"></td>
-            <td th:text="${account.balance}"></td>
-            <td>
-               <a th:href="@{/bank-accounts/edit/{encryptedId}(encryptedId=${encryptedIds[account.id]})}">Modifier</a>
-            <a th:href="@{/bank-accounts/delete/{encryptedId}(encryptedId=${encryptedIds[account.id]})}">Supprimer</a>
-            </td>
-        </tr>
-    </tbody>
-</table>
-<a href="/bank-accounts/add">Ajouter un nouveau compte</a>
+<div class="container my-4">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <h2>Liste des Comptes Bancaires</h2>
+            <table class="table table-striped">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>N° RIB</th>
+                        <th>Solde</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="account : ${bankAccounts}">
+                        <td th:text="${account.nom}"></td>
+                        <td th:text="${account.prenom}"></td>
+                        <td th:text="${account.rib}"></td>
+                        <td th:text="${account.balance}"></td>
+                        <td>
+                            <a th:href="@{/bank-accounts/edit/{id}(id=${account.id})}" class="btn btn-primary btn-sm">Modifier</a>
+                            <a th:href="@{/bank-accounts/delete/{id}(id=${account.id})}" class="btn btn-danger btn-sm">Supprimer</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <a href="/bank-accounts/add" class="btn btn-success">Ajouter un nouveau compte</a>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

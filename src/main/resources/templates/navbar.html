@@ -3,50 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <title>Navbar</title>
-    <style>
-        body { margin: 0; font-family: 'Arial', sans-serif; }
-        .navbar {
-            overflow: hidden;
-            background-color: #333;
-            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-        }
-        .navbar a {
-            float: left;
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 14px 20px;
-            text-decoration: none;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        .navbar a:hover {
-            background-color: #ddd;
-            color: black;
-        }
-        .navbar a.active {
-            background-color: #666;
-            color: white;
-        }
-    </style>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 </head>
 <body>
- <div class="navbar" th:fragment="navbar">
-    <a th:href="@{/home}" class="active">Accueil</a>
-    <a th:href="@{/transfers/transferHistory}">Transfert</a>
-    <a th:href="@{/PMB/accountDetails}">Profil</a>
-    <a th:href="@{/addFriend}">Ajouter Ami</a>
-    <a th:href="@{/bank-accounts}">Compte Bancaire</a>
-    <a th:href="@{/freindList}">Liste d'amis</a>
-    <a th:href="@{/transactions/history}">Historique des transaction</a>
-    <a th:href="@{/transactions/sendMoney}">Transactions</a>
 
-    <!-- Bouton de déconnexion -->
-    <form th:action="@{/logout}" method="post" style="display: inline;">
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-        <button type="submit" style="background-color: #4CAF50; color: white; padding: 10px 20px; margin: 8px 0; border: none; cursor: pointer;">Se déconnecter</button>
-    </form>
+
+<div th:fragment="navbar">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/home}">Accueil</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+              <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/transfers/transferHistory}">Transfert</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/PMB/accountDetails}">Profil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/addFriend}">Ajouter Ami</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/bank-accounts}">Compte Bancaire</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/freindList}">Liste d'amis</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/transactions/history}">Historique des transactions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/transactions/sendMoney}">Transactions</a>
+                </li>
+            </ul>
+        </div>
+            <!-- Bouton  déconnexion -->
+            <form th:action="@{/logout}" method="post" class="d-flex">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                <button type="submit" class="btn btn-outline-success">Se déconnecter</button>
+            </form>
+        </div>
+    </nav>
 </div>
+
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
 </body>
 </html>
-

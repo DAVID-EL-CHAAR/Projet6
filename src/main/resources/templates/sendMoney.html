@@ -3,25 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Transfert de la Banque à PayMyBuddy</title>
+    <!-- Feuille de style Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
 </head>
 <body>
 
 <div th:replace="navbar :: navbar"></div>
 
-    <h1>Transfert de la Banque à PayMyBuddy</h1>
- <form th:action="@{/transactions/sendMoney}" method="post">
-    <label for="recipientEmail">Email du destinataire:</label>
-    <input type="email" id="recipientEmail" name="recipientEmail" required><br><br>
+<div class="container my-4">
+    <h1 class="text-center">Transfert de la Banque à PayMyBuddy</h1>
+    <form th:action="@{/transactions/sendMoney}" method="post" class="mt-4">
+        <div class="form-group mb-3">
+            <label for="recipientEmail">Email du destinataire:</label>
+            <input type="email" class="form-control" id="recipientEmail" name="recipientEmail" required>
+        </div>
 
-    <label for="amount">Montant:</label>
-    <input type="number" id="amount" name="amount" step="0.01" required><br><br>
+        <div class="form-group mb-3">
+            <label for="amount">Montant:</label>
+            <input type="number" class="form-control" id="amount" name="amount" step="0.01" required>
+        </div>
 
-    <label for="description">Description:</label>
-    <input type="text" id="description" name="description"><br><br>
+        <div class="form-group mb-3">
+            <label for="description">Description:</label>
+            <input type="text" class="form-control" id="description" name="description">
+        </div>
 
-    <input type="submit" value="Envoyer l'Argent">
-</form>
-
+        <button type="submit" class="btn btn-primary">Envoyer l'Argent</button>
+    </form>
+</div>
 
 </body>
 </html>
