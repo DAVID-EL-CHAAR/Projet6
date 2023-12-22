@@ -2,6 +2,7 @@ package com.payMyBuddy.controller;
 
 import java.math.BigDecimal;
 import java.security.Principal;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +22,7 @@ import com.payMyBuddy.model.TransactionHistory;
 import com.payMyBuddy.model.User;
 import com.payMyBuddy.repository.TransactionHistoryRepository;
 import com.payMyBuddy.repository.UserRepository;
+import com.payMyBuddy.service.FriendService;
 import com.payMyBuddy.service.TransactionService;
 import com.payMyBuddy.service.UserService;
 
@@ -39,12 +41,17 @@ public class TransactionController {
     
     @Autowired
     private TransactionHistoryRepository transactionHistoryRepository;
+    
+    @Autowired
+    private FriendService friendService;
 
     @GetMapping("/sendMoney")
     public ModelAndView showSendMoneyForm() {
         
         return new ModelAndView("sendMoney");
-    }
+    } 
+  
+
 
     @PostMapping("/sendMoney")
     public String sendMoney(Principal principal,
@@ -63,7 +70,7 @@ public class TransactionController {
     }
 
 
-    
+    /*
     @GetMapping("/history")
     public ModelAndView transactionHistory(Principal principal) {
         User user = userService.findByEmail(principal.getName());
@@ -76,6 +83,26 @@ public class TransactionController {
 
         List<TransactionHistory> receivedTransactions = transactionService
             .findByRecipient(user);
+
+        ModelAndView modelAndView = new ModelAndView("historicTransaction");
+        modelAndView.addObject("sentTransactions", sentTransactions);
+        modelAndView.addObject("receivedTransactions", receivedTransactions);
+        return modelAndView;
+    }*/
+    
+    @GetMapping("/history")
+    public ModelAndView transactionHistory(Principal principal) {
+        User user = userService.findByEmail(principal.getName());
+        if (user == null) {
+            return new ModelAndView("errorPage");
+        }
+
+        List<TransactionHistory> sentTransactions = transactionService.findBySender(user);
+        List<TransactionHistory> receivedTransactions = transactionService.findByRecipient(user);
+
+        // Tri des listes en ordre croissant de la date de transaction
+        sentTransactions.sort(Comparator.comparing(TransactionHistory::getDate).reversed());
+        receivedTransactions.sort(Comparator.comparing(TransactionHistory::getDate).reversed());
 
         ModelAndView modelAndView = new ModelAndView("historicTransaction");
         modelAndView.addObject("sentTransactions", sentTransactions);

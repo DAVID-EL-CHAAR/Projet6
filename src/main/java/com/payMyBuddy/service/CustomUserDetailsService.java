@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.payMyBuddy.model.User;
 import com.payMyBuddy.repository.UserRepository;
-import com.payMyBuddy.CustomUserDetails;
+
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {

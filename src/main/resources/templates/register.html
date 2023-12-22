@@ -26,9 +26,10 @@
             </div>
 
             <div class="form-group mb-3">
-                <label for="email">Email:</label>
-                <input type="email" class="form-control" id="email" th:field="*{email}" required>
-            </div>
+              <label for="email">Email:</label>
+              <input type="email" class="form-control" id="email" th:field="*{email}" required>
+              <div class="alert alert-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Erreur Email</div>
+           </div>
 
             <div class="form-group mb-3">
                 <label for="password">Mot de passe:</label>

@@ -14,7 +14,7 @@ import com.payMyBuddy.model.User;
 import com.payMyBuddy.repository.UserRepository;
 import com.payMyBuddy.service.BankAccountService;
 import com.payMyBuddy.service.UserService;
-import com.payMyBuddy.util.CryptoUtil;
+
 
 import java.math.BigDecimal;
 import java.security.Principal;
@@ -106,12 +106,11 @@ public class BankAccountControllerTest {
         bankAccount.setId(accountId);
         bankAccount.setUser(user);
 
-        // Crypter l'ID 
-        String encryptedId = CryptoUtil.encryptId(accountId);
+       
 
         when(mockBankAccountService.findById(accountId)).thenReturn(bankAccount);
 
-        mockMvc.perform(get("/bank-accounts/edit/{encryptedId}", encryptedId).principal(() -> userEmail))
+        mockMvc.perform(get("/bank-accounts/edit/{accountId}", accountId).principal(() -> userEmail))
             .andExpect(status().isOk())
             .andExpect(model().attribute("bankAccount", bankAccount))
             .andExpect(view().name("editAccount"));
@@ -124,14 +123,13 @@ public class BankAccountControllerTest {
     @Test
     public void testShowEditForm_AccountNotFound() throws Exception {
         Long accountId = 1L;
-        // Crypter l'ID pour le test
-        String encryptedId = CryptoUtil.encryptId(accountId);
+       
 
         // Configurer le service pour retourner null, simulant un compte non trouvé
         when(mockBankAccountService.findById(accountId)).thenReturn(null);
 
         
-        mockMvc.perform(get("/bank-accounts/edit/{encryptedId}", encryptedId))
+        mockMvc.perform(get("/bank-accounts/edit/{accountId}", accountId))
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl("/bank-accounts/errorPage3"))
             .andExpect(flash().attribute("errorMessage", "Compte bancaire non trouvé."));
@@ -140,48 +138,41 @@ public class BankAccountControllerTest {
 
 
 
-@Test
-public void testUpdateBankAccount_Success() throws Exception {
-    BankAccount bankAccount = new BankAccount();
-    bankAccount.setId(1L);
-    bankAccount.setRib("123456789");
-    bankAccount.setBalance(new BigDecimal("1000.00"));
-    bankAccount.setNom("Nom");
-    bankAccount.setPrenom("Prenom");
 
-    // Crypter l'ID
-    String encryptedId = CryptoUtil.encryptId(bankAccount.getId());
+    @Test
+    public void testUpdateBankAccount_Success() throws Exception {
+        BankAccount bankAccount = new BankAccount();
+        bankAccount.setId(1L);
+        bankAccount.setRib("123456789");
+        bankAccount.setBalance(new BigDecimal("1000.00"));
+        bankAccount.setNom("Nom");
+        bankAccount.setPrenom("Prenom");
 
-    mockMvc.perform(post("/bank-accounts/edit")
-        .param("encryptedId", encryptedId)
-        .flashAttr("bankAccount", bankAccount))
-        .andExpect(status().is3xxRedirection())
-        .andExpect(redirectedUrl("/bank-accounts"));
-}
+        mockMvc.perform(post("/bank-accounts/edit")
+            .flashAttr("bankAccount", bankAccount))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(redirectedUrl("/bank-accounts"));
+    }
+
+    @Test
+    public void testUpdateBankAccount_Failure() throws Exception {
+        BankAccount bankAccount = new BankAccount();
+        bankAccount.setId(1L);
+        bankAccount.setRib("123456789");
+        bankAccount.setBalance(new BigDecimal("1000.00"));
+        bankAccount.setNom("Nom");
+        bankAccount.setPrenom("Prenom");
+
+        doThrow(new RuntimeException("Erreur de mise à jour")).when(mockBankAccountService).updateBankAccount(anyLong(), anyString(), any(), anyString(), anyString());
+
+        mockMvc.perform(post("/bank-accounts/edit")
+            .flashAttr("bankAccount", bankAccount))
+            .andExpect(status().is3xxRedirection())
+            .andExpect(redirectedUrl("/bank-accounts/errorPage3"));
+            // Vous pouvez également vérifier si l'attribut de redirection errorMessage est ajouté si nécessaire
+    }
 
 
-@Test
-public void testUpdateBankAccount_Failure() throws Exception {
-    BankAccount bankAccount = new BankAccount();
-    bankAccount.setId(1L);
-    bankAccount.setRib("123456789");
-    bankAccount.setBalance(new BigDecimal("1000.00"));
-    bankAccount.setNom("Nom");
-    bankAccount.setPrenom("Prenom");
-
-    // Crypter l'ID pour le test
-    String encryptedId = CryptoUtil.encryptId(bankAccount.getId());
-
-    // Simuler une exception lors de la mise à jour du compte bancaire
-    doThrow(new RuntimeException("Erreur de mise à jour")).when(mockBankAccountService).updateBankAccount(anyLong(), anyString(), any(), anyString(), anyString());
-
-    mockMvc.perform(post("/bank-accounts/edit")
-        .param("encryptedId", encryptedId)
-        .flashAttr("bankAccount", bankAccount))
-        .andExpect(status().is3xxRedirection())
-        .andExpect(redirectedUrl("/bank-accounts/errorPage3"));
-        // Vous pouvez également vérifier si l'attribut de redirection errorMessage est ajouté si nécessaire
-}
 
 
 @Test
@@ -194,39 +185,37 @@ public void testDeleteBankAccount_Success() throws Exception {
     BankAccount bankAccount = new BankAccount();
     bankAccount.setUser(user);
 
-    // Crypter l'ID pour le test
-    String encryptedId = CryptoUtil.encryptId(accountId);
-
     when(mockBankAccountService.findById(accountId)).thenReturn(bankAccount);
 
-   
-    mockMvc.perform(get("/bank-accounts/delete/{encryptedId}", encryptedId).principal(() -> userEmail))
+    mockMvc.perform(get("/bank-accounts/delete/{id}", accountId).principal(() -> userEmail))
         .andExpect(status().is3xxRedirection())
         .andExpect(redirectedUrl("/bank-accounts"));
 
-    // Vérifier que la méthode delete a été appelée avec le bon ID
     verify(mockBankAccountService).delete(accountId);
 }
 
 
 @Test
 public void testDeleteBankAccount_Failure_NotFoundOrNotAuthorized() throws Exception {
-    Long accountId = 1L;
+	Long accountId = 1L;
+    String userEmail = "user@example.com";
     
-    // Crypter l'ID pour le test
-    String encryptedId = CryptoUtil.encryptId(accountId);
-
+    User user = new User();
+    user.setEmail(userEmail);
+    BankAccount bankAccount = new BankAccount();
+    bankAccount.setUser(user);
     // Configurer le service pour simuler un compte non trouvé
     when(mockBankAccountService.findById(accountId)).thenReturn(null);
 
     
-    mockMvc.perform(get("/bank-accounts/delete/{encryptedId}", encryptedId))
+    mockMvc.perform(get("/bank-accounts/delete/{accountId}", accountId))
         .andExpect(status().is3xxRedirection())
         .andExpect(redirectedUrl("/bank-accounts"));
 
     // Vérifier que la méthode delete n'a jamais été appelée
     verify(mockBankAccountService, never()).delete(accountId);
 }
+
 
 
 @Test

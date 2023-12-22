@@ -36,7 +36,7 @@
             </thead>
             <tbody>
                 <tr th:each="friend : ${friends}">
-                    <th scope="row" th:text="${friendStat.index}">1</th>
+                    <th scope="row" th:text="${friendStat.index + 1}">1</th>
                     <td th:text="${friend.nom}">Nom</td>
                     <td th:text="${friend.prenom}">Prénom</td>
                     <td th:text="${friend.email}">Email</td>

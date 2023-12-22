@@ -22,13 +22,15 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import com.payMyBuddy.CustomUserDetails;
+
 import com.payMyBuddy.model.Friend;
 import com.payMyBuddy.model.User;
 import com.payMyBuddy.repository.UserRepository;
 import com.payMyBuddy.service.FriendDTO;
 import com.payMyBuddy.service.FriendService;
 import com.payMyBuddy.service.UserService;
+
+import jakarta.validation.Valid;
 
 
 @Controller
@@ -55,9 +57,9 @@ public class UserController {
         model.addAttribute("user", new User());
         return "register";
     }
-
+    
     @PostMapping("/register")
-    public String registerUserAccount(@ModelAttribute("user") User userDto, BindingResult result) {
+    public String registerUserAccount( @ModelAttribute("user") User userDto, BindingResult result) {
         try {
             userService.registerNewUserAccount(userDto);
         } catch (RuntimeException e) {

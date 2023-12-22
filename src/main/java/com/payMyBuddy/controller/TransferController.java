@@ -1,6 +1,8 @@
 package com.payMyBuddy.controller;
 
 import org.apache.el.stream.Optional;
+
+import java.util.Comparator;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -78,11 +80,25 @@ public class TransferController {
         }
     }
 
+/*
+@GetMapping("/transferHistory")
+public ModelAndView transferHistory(Principal principal) {
+    User user = userService.findByEmail(principal.getName());
+    List<TransferHistory> history = transferService.getTransferHistory(user.getId());
+
+    ModelAndView modelAndView = new ModelAndView("transferHistory");
+    modelAndView.addObject("history", history);
+    return modelAndView;
+}*/
+    
 
 @GetMapping("/transferHistory")
 public ModelAndView transferHistory(Principal principal) {
     User user = userService.findByEmail(principal.getName());
     List<TransferHistory> history = transferService.getTransferHistory(user.getId());
+
+    // Tri de la liste en ordre croissant de la date de transfert
+    history.sort(Comparator.comparing(TransferHistory::getTransferDate).reversed());
 
     ModelAndView modelAndView = new ModelAndView("transferHistory");
     modelAndView.addObject("history", history);

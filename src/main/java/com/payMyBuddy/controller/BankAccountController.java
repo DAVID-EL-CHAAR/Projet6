@@ -17,7 +17,7 @@ import com.payMyBuddy.model.User;
 import com.payMyBuddy.repository.UserRepository;
 import com.payMyBuddy.service.BankAccountService;
 import com.payMyBuddy.service.UserService;
-import com.payMyBuddy.util.CryptoUtil;
+
 
 @Controller
 @RequestMapping("/bank-accounts")
@@ -116,7 +116,7 @@ public class BankAccountController {
 
 
 
-
+/*
     // Supprimer un compte bancaire
     @GetMapping("/delete/{encryptedId}")
     public String deleteBankAccount(@PathVariable String encryptedId, Principal principal) {
@@ -136,7 +136,7 @@ public class BankAccountController {
         return "redirect:/bank-accounts";
     }
 
-    
+    */
     
     @GetMapping("/errorPage3")
     public String showErrorPage2() {

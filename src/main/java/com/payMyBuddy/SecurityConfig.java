@@ -36,7 +36,7 @@ public class SecurityConfig {
 	        http
 	           // .csrf(csrf -> csrf.disable()) // Toujours à désactiver en production si on a avez pas besoin.
 	            .authorizeHttpRequests(authz -> authz
-	            	.requestMatchers("/register", "/login").permitAll() // Simplifie l'utilisation des antMatchers.
+	            	.requestMatchers("/register", "/login").permitAll() 
 	                .anyRequest().authenticated()
 	            )
 	            .formLogin(form -> form
