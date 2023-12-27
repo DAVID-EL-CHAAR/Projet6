@@ -95,7 +95,7 @@ public class BankAccountController {
     @PostMapping("/edit")
     public String updateBankAccount(@ModelAttribute BankAccount bankAccount, RedirectAttributes redirectAttributes) {
         try {
-            // Utiliser bankAccountId au lieu de bankAccount.getId()
+            
             bankAccountService.updateBankAccount(bankAccount.getId(), bankAccount.getRib(), bankAccount.getBalance(), bankAccount.getNom(), bankAccount.getPrenom());
             return "redirect:/bank-accounts";
         } catch (Exception e) {

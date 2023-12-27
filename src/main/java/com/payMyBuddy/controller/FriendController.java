@@ -58,7 +58,7 @@ public class FriendController {
         if (friendsList != null && !friendsList.isEmpty()) {
             model.addAttribute("friends", friendsList);
         } else {
-            //  ajouter un message ou gérer autrement (a plus tard)
+            
             model.addAttribute("noFriendsMessage", "Vous n'avez pas encore ajouté d'amis.");
         }
     

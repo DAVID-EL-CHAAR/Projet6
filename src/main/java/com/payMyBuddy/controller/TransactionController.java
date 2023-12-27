@@ -69,26 +69,6 @@ public class TransactionController {
         }
     }
 
-
-    /*
-    @GetMapping("/history")
-    public ModelAndView transactionHistory(Principal principal) {
-        User user = userService.findByEmail(principal.getName());
-        if (user == null) {
-            return new ModelAndView("errorPage");
-        }
-
-        List<TransactionHistory> sentTransactions = transactionService
-            .findBySender(user);
-
-        List<TransactionHistory> receivedTransactions = transactionService
-            .findByRecipient(user);
-
-        ModelAndView modelAndView = new ModelAndView("historicTransaction");
-        modelAndView.addObject("sentTransactions", sentTransactions);
-        modelAndView.addObject("receivedTransactions", receivedTransactions);
-        return modelAndView;
-    }*/
     
     @GetMapping("/history")
     public ModelAndView transactionHistory(Principal principal) {

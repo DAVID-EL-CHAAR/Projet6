@@ -225,47 +225,7 @@ public void testShowErrorPage() throws Exception {
         .andExpect(view().name("aPageError"));
 }
 
-/*
- * @Test
-public void testAddBankAccount_Success() throws Exception {
-    // Configuration du mock pour un appel réussi
-    doNothing().when(bankAccountService).addBankAccountToUser(anyString(), anyString(), any(), anyString(), anyString());
 
-    String userEmail = "user@example.com";
-
-    mockMvc.perform(post("/bank-accounts/add")
-            .param("rib", "123456789")
-            .param("initialBalance", "1000.00")
-            .param("nom", "Nom")
-            .param("prenom", "Prenom")
-            .principal(() -> userEmail))
-            .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("/bank-accounts"));
-
-    // Vérification que la méthode a été appelée avec les bons paramètres
-    verify(bankAccountService, times(1)).addBankAccountToUser(eq(userEmail), eq("123456789"), any(), eq("Nom"), eq("Prenom"));
-}
-
-@Test
-public void testAddBankAccount_Exception() throws Exception {
-    // Configuration du mock pour lancer une exception
-    doThrow(new RuntimeException("Erreur")).when(bankAccountService).addBankAccountToUser(anyString(), anyString(), any(), anyString(), anyString());
-
-    String userEmail = "user@example.com";
-
-    mockMvc.perform(post("/bank-accounts/add")
-            .param("rib", "123456789")
-            .param("initialBalance", "1000.00")
-            .param("nom", "Nom")
-            .param("prenom", "Prenom")
-            .principal(() -> userEmail))
-            .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("/bank-accounts/errorPage3"));
-
-    // Vérification que la méthode a été appelée
-    verify(bankAccountService, times(1)).addBankAccountToUser(eq(userEmail), eq("123456789"), any(), eq("Nom"), eq("Prenom"));
-}
- */
 
 
 }

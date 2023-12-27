@@ -86,42 +86,7 @@ public class FriendServiceTest {
 
         verify(friendRepository, times(2)).save(any(Friend.class));
     }
-    /*
-    @Test
-    public void addFriend_ShouldAddFriend_WhenValidRequest() throws Exception {
-        // Initialisation
-        String userEmail = "user@example.com";
-        String friendEmail = "friend@example.com";
-        User user = new User();
-        User friend = new User();
 
-        // Configuration des mocks
-        when(userRepository.findByEmail(userEmail)).thenReturn(user);
-        when(userRepository.findByEmail(friendEmail)).thenReturn(friend);
-        when(friendRepository.findByUserAndFriendEmail(user, friendEmail)).thenReturn(null);
-        when(friendRepository.findByUserAndFriendEmail(friend, userEmail)).thenReturn(null);
-
-        // ArgumentCaptor pour capturer les objets Friend enregistrés
-        ArgumentCaptor<Friend> friendCaptor = ArgumentCaptor.forClass(Friend.class);
-
-        // Appel de la méthode testée
-        friendService.addFriend(userEmail, friendEmail);
-
-        // Vérification que la méthode save est appelée deux fois avec des objets Friend
-        verify(friendRepository, times(2)).save(friendCaptor.capture());
-
-        // Récupération des objets Friend capturés
-        List<Friend> capturedFriends = friendCaptor.getAllValues();
-
-        // Assertions pour vérifier les détails des objets Friend
-        assertEquals(2, capturedFriends.size(), "Deux objets Friend doivent être enregistrés");
-        assertEquals(userEmail, capturedFriends.get(0).getUser().getEmail());
-        assertEquals(friendEmail, capturedFriends.get(0).getFriendEmail());
-        assertEquals(friendEmail, capturedFriends.get(1).getUser().getEmail());
-        assertEquals(userEmail, capturedFriends.get(1).getFriendEmail());
-    }
-
-*/
     
     
     @Test
@@ -167,55 +132,7 @@ public class FriendServiceTest {
     }
 
 
-    /* 
-     * @Test
-public void getFriends_ShouldReturnListOfFriendDTOs_WhenUserExists() {
-    // Configuration initiale
-    String userEmail = "user@example.com";
-    User user = new User(); // Configurez l'utilisateur selon vos besoins
 
-    Friend friend1 = new Friend();
-    friend1.setFriendEmail("friend1@example.com");
-
-    Friend friend2 = new Friend();
-    friend2.setFriendEmail("friend2@example.com");
-
-    User friendUser1 = new User(); // Créez un objet User pour friend1
-    friendUser1.setNom("NomFriend1");
-    friendUser1.setPrenom("PrenomFriend1");
-
-    User friendUser2 = new User(); // Créez un objet User pour friend2
-    friendUser2.setNom("NomFriend2");
-    friendUser2.setPrenom("PrenomFriend2");
-
-    // Configuration des mocks
-    when(userRepository.findByEmail(userEmail)).thenReturn(user);
-    when(friendRepository.findAllByUser(user)).thenReturn(Arrays.asList(friend1, friend2));
-    when(userRepository.findByEmail("friend1@example.com")).thenReturn(friendUser1);
-    when(userRepository.findByEmail("friend2@example.com")).thenReturn(friendUser2);
-
-    // Appel à la méthode testée
-    List<FriendDTO> friendDTOs = friendService.getFriends(userEmail);
-
-    // Assertions
-    assertNotNull(friendDTOs, "La liste des FriendDTO ne devrait pas être null");
-    assertEquals(2, friendDTOs.size(), "La liste des FriendDTO devrait contenir deux éléments");
-
-    FriendDTO dto1 = friendDTOs.get(0);
-    FriendDTO dto2 = friendDTOs.get(1);
-
-    // Assertions pour le premier FriendDTO
-    assertEquals("friend1@example.com", dto1.getEmail(), "L'email du premier FriendDTO devrait correspondre");
-    assertEquals("NomFriend1", dto1.getNom(), "Le nom du premier FriendDTO devrait correspondre");
-    assertEquals("PrenomFriend1", dto1.getPrenom(), "Le prénom du premier FriendDTO devrait correspondre");
-
-    // Assertions pour le second FriendDTO
-    assertEquals("friend2@example.com", dto2.getEmail(), "L'email du second FriendDTO devrait correspondre");
-    assertEquals("NomFriend2", dto2.getNom(), "Le nom du second FriendDTO devrait correspondre");
-    assertEquals("PrenomFriend2", dto2.getPrenom(), "Le prénom du second FriendDTO devrait correspondre");
-}
-
-     */
    
 }
 

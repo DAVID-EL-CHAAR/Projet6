@@ -129,25 +129,7 @@ public class UserControllerTest {
             .andExpect(model().attributeExists("user"))
             .andExpect(view().name("register"));
     }
-    /*
-    @Test
-    @WithMockUser(username = "user@example.com")
-    public void addFriend_ShouldRedirectToSuccessPageOnSuccess() throws Exception {
-        String loggedInUser = "user@example.com";
-        String friendEmail = "different@example.com"; // Assurez-vous que c'est différent du nom d'utilisateur
-
-        User user = new User(); // Mock User correspondant à loggedInUser
-        User friendUser = new User(); // Mock User correspondant à friendEmail
-
-        when(userRepository.findByEmail(loggedInUser)).thenReturn(user);
-        when(userRepository.findByEmail(friendEmail)).thenReturn(friendUser);
-        when(friendRepository.findByUserAndFriendEmail(any(User.class), anyString())).thenReturn(null);
-
-        mockMvc.perform(post("/addFriend").param("friendEmail", friendEmail))
-            .andExpect(status().is3xxRedirection())
-            .andExpect(redirectedUrl("/FsuccessPage"));
-    }
-    */
+    
     
     @Test
     public void testLoginView() throws Exception {

@@ -131,7 +131,7 @@ public class UserController {
             // Si l'utilisateur n'est pas trouvé, 
             model.addAttribute("errorMessage", "Utilisateur non trouvé.");
             
-            // return "errorPage"; 
+            // 
         }
         
         // Retourne le nom de la vue à afficher

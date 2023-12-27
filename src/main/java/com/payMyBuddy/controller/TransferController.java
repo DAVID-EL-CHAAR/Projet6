@@ -80,16 +80,7 @@ public class TransferController {
         }
     }
 
-/*
-@GetMapping("/transferHistory")
-public ModelAndView transferHistory(Principal principal) {
-    User user = userService.findByEmail(principal.getName());
-    List<TransferHistory> history = transferService.getTransferHistory(user.getId());
 
-    ModelAndView modelAndView = new ModelAndView("transferHistory");
-    modelAndView.addObject("history", history);
-    return modelAndView;
-}*/
     
 
 @GetMapping("/transferHistory")

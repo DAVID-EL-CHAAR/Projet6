@@ -52,27 +52,7 @@ public class PayMyBuddyAccountServiceTest {
 
         payMyBuddyAccountService.createAndLinkPayMyBuddyAccount(user);
     }
-    /*
-    @Test
-    public void createAndLinkPayMyBuddyAccount_ShouldSetInitialBalanceToZero() {
-        // Création de l'utilisateur
-        User user = new User();
-        // Configurez les propriétés de l'utilisateur si nécessaire
-
-        // ArgumentCaptor pour capturer l'objet PayMyBuddyAccount passé à la méthode save
-        ArgumentCaptor<PayMyBuddyAccount> accountCaptor = ArgumentCaptor.forClass(PayMyBuddyAccount.class);
-
-        // Appel à la méthode de service
-        payMyBuddyAccountService.createAndLinkPayMyBuddyAccount(user);
-
-        // Vérification que la méthode save est appelée
-        verify(payMyBuddyAccountRepository).save(accountCaptor.capture());
-
-        // Récupération et vérification de l'objet PayMyBuddyAccount capturé
-        PayMyBuddyAccount capturedAccount = accountCaptor.getValue();
-        assertEquals(BigDecimal.ZERO, capturedAccount.getBalance(), "La balance initiale doit être zéro");
-    }
- */
+  
 
     @Test
     public void testFindByUser() {

@@ -70,21 +70,7 @@ public class FriendService {
         return new FriendDTO(friendUser.getNom(), friendUser.getPrenom(), friend.getFriendEmail());
     }
     
-    /*
-    @Transactional(readOnly = true)
-    public List<String> getFriendNames(String userEmail) {
-        User user = userRepository.findByEmail(userEmail);
-        if (user == null) {
-            throw new UsernameNotFoundException("User non trouvé avec cette email: " + userEmail);
-        }
-
-        return user.getFriends().stream()
-                   .map(friend -> {
-                       User friendUser = friend.getFriend(); // Accès à l'objet User représentant l'ami
-                       return friendUser.getNom() + " " + friendUser.getPrenom(); // Concaténation du nom et du prénom
-                   })
-                   .collect(Collectors.toList());
-    }
-    */
+   
+    
 
 }
