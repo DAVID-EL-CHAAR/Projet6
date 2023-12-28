@@ -91,22 +91,7 @@ public class TransactionController {
     }
 
 
-/*
 
-    @GetMapping("/sent")
-    public ResponseEntity<List<Transaction>> getSentTransactions(Principal principal) {
-        User user = userRepository.findByEmail(principal.getName());
-        List<Transaction> sentTransactions = transactionService.getSentTransactions(user.getId());
-        return ResponseEntity.ok(sentTransactions);
-    }
-
-    @GetMapping("/received")
-    public ResponseEntity<List<Transaction>> getReceivedTransactions(Principal principal) {
-        User user = userRepository.findByEmail(principal.getName());
-        List<Transaction> receivedTransactions = transactionService.getReceivedTransactions(user.getId());
-        return ResponseEntity.ok(receivedTransactions);
-    }
-    */
     @GetMapping("/tsuccessPage")
     public String showSuccessPage() {
         return "tsuccessPage"; 
