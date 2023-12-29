@@ -66,6 +66,9 @@ public class FriendController {
     return "friendlist";
         
     }
+    
+    
+
 
 }
 

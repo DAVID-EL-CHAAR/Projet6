@@ -1,7 +1,7 @@
 package com.payMyBuddy.controller;
 
-import org.apache.el.stream.Optional;
-
+import java.util.Optional;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +18,22 @@ import com.payMyBuddy.repository.PayMyBuddyAccountRepository;
 import com.payMyBuddy.repository.UserRepository;
 import com.payMyBuddy.service.TransferService;
 import com.payMyBuddy.service.UserService;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import java.math.BigDecimal;
 import java.security.Principal;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.security.core.Authentication;
+import org.springframework.ui.Model;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/transfers")
@@ -95,6 +108,7 @@ public ModelAndView transferHistory(Principal principal) {
     modelAndView.addObject("history", history);
     return modelAndView;
 }
+    
 
 
 @GetMapping("/bankToPayMyBuddy")

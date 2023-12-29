@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--  <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -42,7 +42,7 @@
                 </li>
             </ul>
         </div>
-            <!-- Bouton  déconnexion -->
+           
             <form th:action="@{/logout}" method="post" class="d-flex">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                 <button type="submit" class="btn btn-outline-success">Se déconnecter</button>
@@ -52,8 +52,101 @@
 </div>
 
 
-<!-- Bootstrap JS Bundle -->
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
+</body>
+</html> -->
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <title>Navbar</title>
+  <style>
+    /* Styles personnalisés */
+    .navbar-custom {
+      background-color: #f8f9fa; /* Couleur de fond */
+    }
+    .navbar-custom .navbar-nav .nav-link {
+      color: #495057; /* Couleur des liens */
+      font-weight: bold; /* Rend le texte en gras */
+    }
+    .navbar-custom .navbar-nav .nav-link:hover {
+      color: #0d6efd; /* Couleur des liens au survol */
+    }
+    .navbar-brand-custom {
+      color: #0d6efd; /* Couleur du titre */
+      font-weight: bold;
+    }
+    /* Style pour le bouton actif comme dans l'exemple de l'image */
+    .navbar-custom .navbar-nav .nav-link.active {
+      color: #fff;
+      background-color: #0d6efd;
+      border-radius: 0.25rem;
+      padding: 0.5rem 1rem;
+    }
+
+    .custom-toggler {
+      background-color: #28a745; /* Bootstrap success green */
+      color: white;
+      border: none;
+    }
+
+    .custom-toggler .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(255, 255, 255, 0.5)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+    }
+    /* Assurez-vous que les styles de Thymeleaf sont correctement appliqués */
+     
+  </style>
+</head>
+<body>
+
+<div th:fragment="navbar">
+<nav class="navbar navbar-expand-lg navbar-custom">
+  <div class="container-fluid">
+     
+     <div class="text-center mt-3 mb-3">
+      <a class="btn btn-success" th:href="@{/home}" role="button">Pay My Buddy</a>
+
+    </div>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+         
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/transfers/transferHistory}" style="font-weight: bold;">Transfert</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/PMB/accountDetails}" style="font-weight: bold;">Profil</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/addFriend}" style="font-weight: bold;">Ajouter Ami</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/bank-accounts}" style="font-weight: bold;">Compte Bancaire</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/freindList}" style="font-weight: bold;">Liste d'amis</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/transactions/history}" style="font-weight: bold;">Historique des transactions</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/transactions/sendMoney}" style="font-weight: bold;">Transactions</a>
+        </li>
+        <li class="nav-item">
+           <form th:action="@{/logout}" method="post" class="d-flex">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+        <button type="submit" class="btn btn-outline-success">Se déconnecter</button>
+      </form>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+</div>
+<!-- Incluez les scripts Bootstrap JS et ses dépendances ici si nécessaire -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

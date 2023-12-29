@@ -46,9 +46,11 @@ public class TransactionController {
     private FriendService friendService;
 
     @GetMapping("/sendMoney")
-    public ModelAndView showSendMoneyForm() {
-        
-        return new ModelAndView("sendMoney");
+    public ModelAndView showSendMoneyForm(Principal principal) {
+    	ModelAndView modelAndView = new ModelAndView("sendMoney");
+        List<String> contactEmails = friendService.getFriendsEmails(principal.getName());
+        modelAndView.addObject("contactEmails", contactEmails);
+        return modelAndView;
     } 
   
 

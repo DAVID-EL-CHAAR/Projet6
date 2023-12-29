@@ -5,14 +5,108 @@
     <title>Transfert de la Banque à PayMyBuddy</title>
     <!-- Feuille de style Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    
+    <style type="text/css">
+   #nav-tab .nav-tabs {
+    background-color: #f0f0f0; 
+}
+
+#nav-tab .nav-item:not(:last-child)::after {
+    content: " / ";
+    padding: 0 5px; 
+}
+#add-contact {
+  position: absolute;
+  right: 120px;
+  top : 225px
+  
+}
+
+    
+    
+    
+    
+    </style>
+    
+    
 </head>
 <body>
 
 <div th:replace="navbar :: navbar"></div>
 
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    
+    
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" th:href="@{/home}">Accueil</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" >/</a>
+        </li>
+       <li class="nav-item">
+          <a class="nav-link active" aria-current="page" th:href="@{/transfers/transferHistory}">Transfer</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+
+
 <div class="container my-4">
     <h1 class="text-center">Transfert de la Banque à PayMyBuddy</h1>
-    <form th:action="@{/transactions/sendMoney}" method="post" class="mt-4">
+ 
+    
+   <form class="form-group" th:action="@{/transactions/sendMoney}" method="post">
+<input type="hidden" name="userAccount" id="user-account">
+
+<div class="text-center mt-3 mb-3">
+      <a class="btn btn-primary" th:href="@{/addFriend}" role="button" id="add-contact">Add Connection</a>
+
+    </div>
+
+<div id="transfer" style="display: block; background-color: #eeeeee; margin-top: 3em; padding: 1em;">
+<div class="mt-2 mb-2">
+<h5>Send Money: </h5>
+</div>
+<div class="row">
+<div class="col">
+<label for="recipientEmail">Email du destinataire:</label>
+<select class="form-control" id="recipientEmail" name="recipientEmail" required>
+<option value="">-- Sélectionnez un destinataire --</option>
+<th:block th:each="email : ${contactEmails}">
+<option th:value="${email}" th:text="${email}"></option>
+</th:block>
+</select>
+</div>
+<div class="col">
+<label for="amount">Montant (€):</label>
+<input class="form-control" type="number" min="1" value="0" step=".01" name="amount" id="amount" required>
+</div>
+<div class="col">
+<label for="description">Description:</label>
+<input class="form-control" type="text" name="description" id="description">
+</div>
+<div class="col d-flex align-items-end">
+<button type="submit" name="transfer" class="btn btn-success" value="Transfer">Envoyer l'Argent</button>
+</div>
+</div>
+</div>
+</form>
+
+
+    
+    </div>
+
+</body>
+</html>
+
+ <!--  <form th:action="@{/transactions/sendMoney}" method="post" class="mt-4">
         <div class="form-group mb-3">
             <label for="recipientEmail">Email du destinataire:</label>
             <input type="email" class="form-control" id="recipientEmail" name="recipientEmail" required>
@@ -29,8 +123,4 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Envoyer l'Argent</button>
-    </form>
-</div>
-
-</body>
-</html>
+    </form>-->

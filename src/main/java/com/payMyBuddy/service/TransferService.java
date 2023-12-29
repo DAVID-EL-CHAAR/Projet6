@@ -1,13 +1,16 @@
 package com.payMyBuddy.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 import com.payMyBuddy.model.BankAccount;
 import com.payMyBuddy.model.PayMyBuddyAccount;
 import com.payMyBuddy.model.TransferHistory;
@@ -116,6 +119,11 @@ public class TransferService {
 	  public List<TransferHistory> getTransferHistory(Long userId) {
 		    return transferHistoryRepository.findByUserId(userId);
 		}
+	
+	/*  @Transactional(readOnly = true)
+	  public Page<TransferHistory> getTransferHistory(Long userId, Pageable pageable) {
+	      return transferHistoryRepository.findByUserId(userId, pageable);
+	  }*/
 
 
 

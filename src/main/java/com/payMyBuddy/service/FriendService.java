@@ -70,6 +70,16 @@ public class FriendService {
         return new FriendDTO(friendUser.getNom(), friendUser.getPrenom(), friend.getFriendEmail());
     }
     
+  
+    public List<String> getFriendsEmails(String username) {
+        User user = userRepository.findByEmail(username);
+        List<Friend> friends = friendRepository.findAllByUser(user);
+
+        return friends.stream()
+                      .map(Friend::getFriendEmail)
+                      .collect(Collectors.toList());
+    }
+    
    
     
 
